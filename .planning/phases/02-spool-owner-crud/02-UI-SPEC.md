@@ -50,11 +50,13 @@ Source: D-04, D-05 (CONTEXT.md)
 ```
 
 - Sticky summary bar: `position: sticky; top: 0; z-index: 100`
-- Filter bar: `display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px`
+- Filter bar: `display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 16px`
 - Spool list: scrollable main area
 - Balance section: `<details open>` element (native collapsible, no JS toggle needed, does not persist state across reloads — native default handles this correctly)
 - Header contains app title ("Filament Catalog") and a gear icon button that opens the Owner Management modal
 - No sidebar. Single-column layout.
+
+**Primary visual anchor:** "Add Spool" button (accent color, positioned in the filter bar or header area) and the spool list as the dominant content area.
 
 ---
 
@@ -65,8 +67,8 @@ Declared values (multiples of 4 only):
 | Token | Value | Usage |
 |-------|-------|-------|
 | xs | 4px | Icon gaps, color swatch gap, chip internal padding vertical |
-| sm | 8px | Filter gap, chip margin, form field gap, table cell padding |
-| md | 16px | Card padding, section horizontal padding, modal padding |
+| sm | 8px | Filter gap, chip margin, form field gap, table cell padding, spool row gap, filter bar vertical padding |
+| md | 16px | Card padding, section horizontal padding, modal padding, chip horizontal padding |
 | lg | 24px | Section vertical padding, form group spacing |
 | xl | 32px | Major section break (between filter bar and spool list) |
 | 2xl | 48px | (reserved — not used in this phase) |
@@ -84,12 +86,12 @@ Exceptions:
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 | 1.5 |
-| Label | 13px | 600 | 1.4 |
 | Heading (summary values, section titles) | 20px | 600 | 1.2 |
-| Display (summary bar stat numbers) | 24px | 700 | 1.0 |
+| Display (summary bar stat numbers) | 24px | 600 | 1.0 |
 
 Notes:
-- Only two font weights in use: 400 (regular) and 600 (semibold). The 700 weight for display numerals in the summary bar is the single exception.
+- Exactly two font weights in use: 400 (regular) and 600 (semibold). No other weights permitted.
+- Semibold (600) is applied to labels, headings, and any element that requires hierarchy emphasis without a size increase.
 - All text uses `system-ui, sans-serif` — no web font loading.
 - Monospace font (`font-family: monospace`) used only for color hex values (`#RRGGBB` display in spool cards and form).
 
@@ -129,7 +131,7 @@ Destructive (#dc2626) reserved for:
 ### Summary Bar
 
 - Container: `position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #e2e8f0; height: 48px; padding: 0 16px; display: flex; align-items: center; gap: 32px; z-index: 100`
-- Four stat cells. Each cell: label in 13px/600 muted text above, value in 24px/700 accent or dark text below.
+- Four stat cells. Each cell: label in 14px/600 muted text above, value in 24px/600 accent or dark text below.
 - Stats (left to right): "Total Spools", "My Spools", "Total Value", "Total Owed"
 - Values update on every data mutation (re-fetch `/api/summary`).
 - "Total Value" and "Total Owed" formatted as currency: `€0.00` (Euro sign, two decimal places).
@@ -138,7 +140,7 @@ Destructive (#dc2626) reserved for:
 
 Source: D-06 (CONTEXT.md)
 
-- Container: `display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e2e8f0`
+- Container: `display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 16px; background: #ffffff; border-bottom: 1px solid #e2e8f0`
 - Five filter controls rendered left to right:
   1. **Owner select**: `<select>` — first option "All owners", then one `<option>` per owner. Width: 140px.
   2. **Material select**: `<select>` — first option "All materials", then distinct materials from loaded spools. Width: 140px.
@@ -146,23 +148,23 @@ Source: D-06 (CONTEXT.md)
   4. **Payment status chips**: Three `<button>` elements labeled "Paid", "Unpaid", "Partial". Same active/inactive treatment as spool status chips.
   5. **Free text search**: `<input type="search" placeholder="Search name, material, notes…">` — matches against spool Name, Material, Notes fields. Width: 200px.
 - Filtering is **live on every `input`/`change` event** — no Apply button.
-- Chip buttons: height 32px, horizontal padding 12px, border-radius 16px (pill shape), font-size 13px/600.
+- Chip buttons: height 32px, horizontal padding 16px, border-radius 16px (pill shape), font-size 14px/600.
 - Selects and search input: height 36px, border-radius 6px.
 
 ### Spool List
 
 - List container: `display: flex; flex-direction: column; gap: 0; padding: 0`
-- Each spool: one row card. `display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #e2e8f0; background: #ffffff`
+- Each spool: one row card. `display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid #e2e8f0; background: #ffffff`
 - Row layout (left to right):
   - **Color swatch**: 20px × 20px circle, `background: {ColorHex}`, `border: 1px solid rgba(0,0,0,0.1)`, border-radius 50%
-  - **Name + Material**: Name in 14px/600, Material in 13px/400 muted below — stacked vertically
-  - **Owner**: 13px muted text
-  - **Weight**: "{N}g" or "—" if null, 13px
-  - **Price**: "€{N.NN}" or "—" if null, 13px
+  - **Name + Material**: Name in 14px/600, Material in 14px/400 muted below — stacked vertically
+  - **Owner**: 14px/400 muted text
+  - **Weight**: "{N}g" or "—" if null, 14px/400
+  - **Price**: "€{N.NN}" or "—" if null, 14px/400
   - **Spool status badge**: pill chip, read-only. Sealed=blue-tint, Active=green-tint, Empty=gray-tint (see badge colors below)
   - **Payment status badge**: pill chip, read-only. Paid=green-tint, Unpaid=red-tint, Partial=amber-tint
   - **Notes icon**: if Notes is non-empty, show a small "note" indicator (Unicode ✎ or similar), title attribute = note text
-  - **Edit button**: "Edit" — 13px, minimal style, right-aligned. Opens spool edit form.
+  - **Edit button**: "Edit" — 14px/400, minimal style, right-aligned. Opens spool edit form.
 - Badge colors (pill chips, read-only):
   - Sealed: `background: #dbeafe; color: #1e40af`
   - Active: `background: #dcfce7; color: #166534`
@@ -185,7 +187,7 @@ Source: D-06 (CONTEXT.md)
   7. **Spool status** — `<select>`: Sealed / Active / Empty. Default: Sealed.
   8. **Payment status** — `<select>`: Unpaid / Paid / Partial. Default: Unpaid.
   9. **Notes** — `<textarea rows="2" placeholder="Optional notes">` — optional
-- Footer: "Cancel" button (closes dialog, no save) + primary "Save" button (accent color).
+- Footer: "Discard Changes" button (closes dialog, no save) + primary "Save Spool" button (accent color).
 - Edit mode only: "Delete Spool" destructive button left-aligned in footer. On click: show inline confirmation text "Are you sure? This cannot be undone." with a "Confirm Delete" button (destructive red). No separate dialog — inline confirm within the form footer.
 - Form validation: HTML5 `required` on Name, Material, Owner. On submit with missing required fields: native browser validation bubbles. No custom validation UI needed.
 
@@ -196,9 +198,9 @@ Source: D-07 (CONTEXT.md)
 - Opened by gear icon (⚙) in page header. Gear icon: 20px, muted color, hover darkens.
 - Native `<dialog>`. Width: 400px max.
 - Title: "Manage Owners"
-- Content: list of current owners. Each row: owner name (14px/600) + delete button (13px, destructive style). "Me" row shows "(you)" suffix and has no delete button.
-- "Add Owner" form at bottom of list: `<input type="text" placeholder="Owner name">` + "Add" button (accent).
-- On delete attempt for owner with spools: API returns 409. Modal stays open. Show inline error below the owner row: "Cannot delete — {N} spool(s) assigned. Remove spools first." in #dc2626 at 13px.
+- Content: list of current owners. Each row: owner name (14px/600) + delete button (14px/400, destructive style). "Me" row shows "(you)" suffix and has no delete button.
+- "Add Owner" form at bottom of list: `<input type="text" placeholder="Owner name">` + "Add Owner" button (accent).
+- On delete attempt for owner with spools: API returns 409. Modal stays open. Show inline error below the owner row: "Cannot delete — {N} spool(s) assigned. Remove spools first." in #dc2626 at 14px/400.
 - On modal close: dispatch `CustomEvent('owners-updated')` on `document` so the spool form's owner select refreshes.
 - Fetches `/api/owners` on every open.
 
@@ -207,12 +209,12 @@ Source: D-07 (CONTEXT.md)
 Source: D-04, D-05, D-10, BAL-02, BAL-03 (CONTEXT.md)
 
 - Wrapped in `<details open>` — starts expanded, no JS needed for toggle.
-- `<summary>` text: "Balance Overview" — 16px/600, padding 12px 16px.
+- `<summary>` text: "Balance Overview" — 14px/600, padding 8px 16px.
 - Table inside details: columns — Owner | Spools | Value | Owed
 - Each row: one non-me owner. Columns are 14px/400.
 - "Value" = sum of non-null PricePaid. "Owed" = sum of PricePaid where PaymentStatus is Unpaid or Partial.
 - **BAL-03 flag**: If any spool contributing to the row has null PricePaid, append a warning indicator after the owner name: amber `⚠` icon + tooltip/title text "One or more spools have no price — totals may be incomplete." Use `color: #f59e0b`.
-- Table header row: 12px/600 uppercase muted text.
+- Table header row: 14px/600 uppercase muted text (`text-transform: uppercase; letter-spacing: 0.05em`).
 - No rows state: muted italic text "No other owners yet."
 
 ---
@@ -242,7 +244,7 @@ Source: D-04, D-05, D-10, BAL-02, BAL-03 (CONTEXT.md)
 
 ### Error Handling (UI)
 
-- API errors display as an inline error banner within the relevant modal or section: `background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 8px 12px; border-radius: 6px; font-size: 13px`
+- API errors display as an inline error banner within the relevant modal or section: `background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 8px 16px; border-radius: 6px; font-size: 14px`
 - Error banner is injected adjacent to the form submit button and removed on next submit attempt.
 - 404 on load: show a muted "Could not load data. Is the service running?" paragraph in the main content area.
 
@@ -255,8 +257,8 @@ Source: D-04, D-05, D-10, BAL-02, BAL-03 (CONTEXT.md)
 | Primary CTA (add spool) | "Add Spool" |
 | Spool form title (add) | "Add Spool" |
 | Spool form title (edit) | "Edit Spool" |
-| Spool form save button | "Save" |
-| Spool form cancel button | "Cancel" |
+| Spool form save button | "Save Spool" |
+| Spool form cancel button | "Discard Changes" |
 | Spool delete (step 1) | "Delete Spool" |
 | Spool delete (confirmation) | "Are you sure? This cannot be undone." |
 | Spool delete (confirm button) | "Confirm Delete" |
@@ -265,7 +267,7 @@ Source: D-04, D-05, D-10, BAL-02, BAL-03 (CONTEXT.md)
 | Empty spool list (filtered) | "No spools match your filters." |
 | Owner modal title | "Manage Owners" |
 | Owner add input placeholder | "Owner name" |
-| Owner add button | "Add" |
+| Owner add button | "Add Owner" |
 | Owner delete error | "Cannot delete — {N} spool(s) assigned. Remove spools first." |
 | Balance empty state | "No other owners yet." |
 | BAL-03 flag tooltip | "One or more spools have no price — totals may be incomplete." |
