@@ -62,8 +62,26 @@
 
 ## Traceability
 
-*(Filled by roadmapper)*
-
-| REQ-ID | Phase |
-|--------|-------|
-| | |
+| REQ-ID  | Phase                    | Status  |
+|---------|--------------------------|---------|
+| INFRA-01 | Phase 1 — Foundation    | Pending |
+| INFRA-02 | Phase 1 — Foundation    | Pending |
+| INFRA-03 | Phase 1 — Foundation    | Pending |
+| OWNER-03 | Phase 1 — Foundation    | Pending |
+| SPOOL-01 | Phase 2 — Spool & Owner CRUD | Pending |
+| SPOOL-02 | Phase 2 — Spool & Owner CRUD | Pending |
+| SPOOL-03 | Phase 2 — Spool & Owner CRUD | Pending |
+| SPOOL-04 | Phase 2 — Spool & Owner CRUD | Pending |
+| SPOOL-05 | Phase 2 — Spool & Owner CRUD | Pending |
+| SPOOL-06 | Phase 2 — Spool & Owner CRUD | Pending |
+| OWNER-01 | Phase 2 — Spool & Owner CRUD | Pending |
+| OWNER-02 | Phase 2 — Spool & Owner CRUD | Pending |
+| BAL-01  | Phase 2 — Spool & Owner CRUD | Pending |
+| BAL-02  | Phase 2 — Spool & Owner CRUD | Pending |
+| BAL-03  | Phase 2 — Spool & Owner CRUD | Pending |
+| SYNC-01 | Phase 3 — Bambu Catalog Sync | Pending |
+| SYNC-02 | Phase 3 — Bambu Catalog Sync | Pending |
+| SYNC-03 | Phase 3 — Bambu Catalog Sync | Pending |
+| SYNC-04 | Phase 3 — Bambu Catalog Sync | Pending |
+| SYNC-05 | Phase 3 — Bambu Catalog Sync | Pending |
+| SYNC-06 | Phase 3 — Bambu Catalog Sync | Pending |
