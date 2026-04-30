@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Spool & Owner CRUD
 
 ## Current Position
 
 Phase: 2 of 3 (Spool & Owner CRUD)
-Plan: 0 of ? in current phase
-Status: Ready to plan
-Last activity: 2026-05-01 — Phase 1 complete (3/3 plans, verification passed)
+Plan: 0 of 4 in current phase
+Status: Ready to execute
+Last activity: 2026-05-01 — Phase 2 planned (4 plans, verification passed)
 
 Progress: [███░░░░░░░] 33%
 
@@ -68,4 +68,4 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-01
-Stopped at: Phase 1 complete. Phase 2 (Spool & Owner CRUD) ready to discuss/plan.
+Stopped at: Phase 2 planned (4 plans in 3 waves). Ready to execute Phase 2.
