@@ -21,7 +21,11 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
   2. `filament.db` is created next to the executable (AppContext.BaseDirectory), not in the working directory
   3. The database contains the correct tables and one Owner row with IsMe = true and Name = "Me"
   4. Navigating to http://localhost:5000 serves index.html without a 404
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold (csproj, appsettings.json, Owner model, AppDbContext, wwwroot/index.html)
+- [ ] 01-02-PLAN.md — Program.cs + EF migration + app startup verification
+- [ ] 01-03-PLAN.md — Service install/uninstall scripts + human smoke test
 **UI hint**: no
 
 ### Phase 2: Spool & Owner CRUD
@@ -52,6 +56,6 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 0/3 | Not started | - |
 | 2. Spool & Owner CRUD | 0/? | Not started | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
