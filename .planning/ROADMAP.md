@@ -22,10 +22,20 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
   3. The database contains the correct tables and one Owner row with IsMe = true and Name = "Me"
   4. Navigating to http://localhost:5000 serves index.html without a 404
 **Plans**: 3 plans
-Plans:
+
+**Wave 1:**
 - [ ] 01-01-PLAN.md — Project scaffold (csproj, appsettings.json, Owner model, AppDbContext, wwwroot/index.html)
+
+**Wave 2** *(blocked on Wave 1 completion)*:
 - [ ] 01-02-PLAN.md — Program.cs + EF migration + app startup verification
 - [ ] 01-03-PLAN.md — Service install/uninstall scripts + human smoke test
+
+**Cross-cutting constraints:**
+- `Path.Combine(AppContext.BaseDirectory, "filament.db")` — all plans referencing the DB path must use this exact form
+- `UseDefaultFiles()` before `UseStaticFiles()` — middleware order is non-negotiable
+- Stale `__EFMigrationsLock` guard must execute before `MigrateAsync()`
+- `DateTime.UtcNow` everywhere — no `DateTime.Now`
+
 **UI hint**: no
 
 ### Phase 2: Spool & Owner CRUD
