@@ -43,11 +43,31 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Depends on**: Phase 1
 **Requirements**: SPOOL-01, SPOOL-02, SPOOL-03, SPOOL-04, SPOOL-05, SPOOL-06, OWNER-01, OWNER-02, BAL-01, BAL-02, BAL-03
 **Success Criteria** (what must be TRUE):
-  1. User can open the app, add a spool (picking a product from a dropdown with a color swatch preview), assign it to an owner, set weight/price/statuses, and see it appear in the spool list
+  1. User can open the app, add a spool (free-text name/material/color in Phase 2), assign it to an owner, set weight/price/statuses, and see it appear in the spool list
   2. User can edit a spool's fields and delete a spool; deleting an owner with spools shows an error
   3. User can filter the spool list by owner, material type, spool status, payment status, and free text — combinations work
   4. Summary bar shows correct totals (spools, my spools, total value, total owed); balance table shows one row per non-me owner with spool count, value, and amount owed; rows with price-missing spools are visually flagged
-**Plans**: TBD
+**Plans**: 4 plans
+
+**Wave 1** *(parallel — no shared files)*:
+- [ ] 02-01-PLAN.md — Spool entity + PaymentStatus/SpoolStatus enums + AppDbContext extension + AddSpools migration
+- [ ] 02-03-PLAN.md — index.html (full page markup) + app.css (design tokens + all component styles) + api.js (fetch wrappers)
+
+**Wave 2** *(blocked on 02-01)*:
+- [ ] 02-02-PLAN.md — All 9 API endpoints in Program.cs (owners CRUD, spools CRUD, summary, balance) + JsonStringEnumConverter config
+
+**Wave 3** *(blocked on 02-02 + 02-03)*:
+- [ ] 02-04-PLAN.md — JS feature modules: spools.js (render + filter + dialog) + owners.js (modal) + summary.js (stats + balance) + app.js (init + wiring) + human verify checkpoint
+
+**Cross-cutting constraints:**
+- `DateTime.UtcNow` everywhere — no `DateTime.Now`
+- `DeleteBehavior.Restrict` on Spool→Owner FK — no cascade delete
+- ColorHex defaults to `#888888` if empty/invalid (enforced server-side in POST and PUT)
+- Enum values serialize as strings via `JsonStringEnumConverter` — JS filter depends on "Sealed"/"Active"/"Empty" strings
+- Native `<dialog>` for all modals — no div overlay
+- ES modules with `type="module"` — no bundler, no framework
+- All user-supplied strings rendered to DOM via `textContent` — no innerHTML with user data (XSS)
+
 **UI hint**: yes
 
 ### Phase 3: Bambu Catalog Sync
@@ -67,5 +87,5 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
-| 2. Spool & Owner CRUD | 0/? | Not started | - |
+| 2. Spool & Owner CRUD | 0/4 | Not started | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
