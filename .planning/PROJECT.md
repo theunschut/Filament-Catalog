@@ -12,7 +12,7 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] App runs as a Windows service (auto-starts with Windows, always at localhost:5000) — *Validated in Phase 1: Foundation*
 
 ### Active
 
@@ -26,7 +26,6 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 - [ ] User can manage owners (add / delete; delete rejected if owner has spools)
 - [ ] User sees a summary bar (total spools, my spools, total value, total owed to me)
 - [ ] User sees a balance overview per non-me owner (spool count, total value, amount owed)
-- [ ] App runs as a Windows service (auto-starts with Windows, always at localhost:5000)
 
 ### Out of Scope
 
@@ -78,4 +77,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-30 after initialization*
+*Last updated: 2026-05-01 after Phase 1 completion*

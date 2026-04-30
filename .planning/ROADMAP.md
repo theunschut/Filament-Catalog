@@ -6,7 +6,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Runnable Windows service with data layer, EF Core migrations, and seeded "Me" owner
+- [x] **Phase 1: Foundation** - Runnable Windows service with data layer, EF Core migrations, and seeded "Me" owner *(completed 2026-05-01)*
 - [ ] **Phase 2: Spool & Owner CRUD** - Full spool management, owner management, and summary/balance views in the browser
 - [ ] **Phase 3: Bambu Catalog Sync** - Shopify JSON API sync with ImageSharp color extraction and sync-status UI
 
@@ -24,11 +24,11 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Plans**: 3 plans
 
 **Wave 1:**
-- [ ] 01-01-PLAN.md — Project scaffold (csproj, appsettings.json, Owner model, AppDbContext, wwwroot/index.html)
+- [x] 01-01-PLAN.md — Project scaffold (csproj, appsettings.json, Owner model, AppDbContext, wwwroot/index.html)
 
 **Wave 2** *(blocked on Wave 1 completion)*:
-- [ ] 01-02-PLAN.md — Program.cs + EF migration + app startup verification
-- [ ] 01-03-PLAN.md — Service install/uninstall scripts + human smoke test
+- [x] 01-02-PLAN.md — Program.cs + EF migration + app startup verification
+- [x] 01-03-PLAN.md — Service install/uninstall scripts + human smoke test
 
 **Cross-cutting constraints:**
 - `Path.Combine(AppContext.BaseDirectory, "filament.db")` — all plans referencing the DB path must use this exact form
@@ -66,6 +66,6 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
+| 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 0/? | Not started | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
