@@ -1,6 +1,7 @@
 using Serilog;
 using Serilog.Events;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -28,6 +29,9 @@ try
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlite($"Data Source={dbPath}"));
 
+    builder.Services.ConfigureHttpJsonOptions(o =>
+        o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
     var app = builder.Build();
 
     using (var scope = app.Services.CreateScope())
@@ -40,6 +44,33 @@ try
 
     app.UseDefaultFiles();   // MUST be before UseStaticFiles — per CLAUDE.md
     app.UseStaticFiles();
+
+    // ---- Owners ----
+    app.MapGet("/api/owners", async (AppDbContext db) =>
+        await db.Owners.OrderBy(o => o.CreatedAt).ToListAsync());
+
+    app.MapPost("/api/owners", async (AppDbContext db, OwnerCreateRequest req) =>
+    {
+        if (string.IsNullOrWhiteSpace(req.Name))
+            return Results.UnprocessableEntity(new { error = "Name is required." });
+        var owner = new Owner { Name = req.Name.Trim(), IsMe = false, CreatedAt = DateTime.UtcNow };
+        db.Owners.Add(owner);
+        await db.SaveChangesAsync();
+        return Results.Created($"/api/owners/{owner.Id}", owner);
+    });
+
+    app.MapDelete("/api/owners/{id:int}", async (AppDbContext db, int id) =>
+    {
+        var owner = await db.Owners.FindAsync(id);
+        if (owner is null) return Results.NotFound(new { error = "Owner not found." });
+        if (owner.IsMe) return Results.UnprocessableEntity(new { error = "Cannot delete the 'Me' owner." });
+        var spoolCount = await db.Spools.CountAsync(s => s.OwnerId == id);
+        if (spoolCount > 0)
+            return Results.Conflict(new { error = $"Cannot delete — {spoolCount} spool(s) assigned. Remove spools first." });
+        db.Owners.Remove(owner);
+        await db.SaveChangesAsync();
+        return Results.NoContent();
+    });
 
     await app.RunAsync();
 }
@@ -72,3 +103,5 @@ static async Task SeedAsync(AppDbContext db)
         await db.SaveChangesAsync();
     }
 }
+
+record OwnerCreateRequest(string Name);
