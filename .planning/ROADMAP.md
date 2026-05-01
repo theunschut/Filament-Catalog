@@ -50,8 +50,8 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Plans**: 4 plans
 
 **Wave 1** *(parallel — no shared files)*:
-- [ ] 02-01-PLAN.md — Spool entity + PaymentStatus/SpoolStatus enums + AppDbContext extension + AddSpools migration
-- [ ] 02-03-PLAN.md — index.html (full page markup) + app.css (design tokens + all component styles) + api.js (fetch wrappers)
+- [x] 02-01-PLAN.md — Spool entity + PaymentStatus/SpoolStatus enums + AppDbContext extension + AddSpools migration
+- [x] 02-03-PLAN.md — index.html (full page markup) + app.css (design tokens + all component styles) + api.js (fetch wrappers)
 
 **Wave 2** *(blocked on 02-01)*:
 - [ ] 02-02-PLAN.md — All 9 API endpoints in Program.cs (owners CRUD, spools CRUD, summary, balance) + JsonStringEnumConverter config
@@ -87,5 +87,5 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
-| 2. Spool & Owner CRUD | 0/4 | Not started | - |
+| 2. Spool & Owner CRUD | 2/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |

@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-04-30)
 ## Current Position
 
 Phase: 2 of 3 (Spool & Owner CRUD)
-Plan: 0 of 4 in current phase
-Status: Ready to execute
-Last activity: 2026-05-01 — Phase 2 planned (4 plans, verification passed)
+Plan: 2 of 4 in current phase
+Status: In progress (Wave 1 complete, Wave 2 starting)
+Last activity: 2026-05-01 — Wave 1 complete: 02-01 (Spool entity + migration) and 02-03 (frontend scaffolding) merged
 
 Progress: [███░░░░░░░] 33%
 
