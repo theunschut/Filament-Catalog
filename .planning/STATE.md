@@ -54,6 +54,7 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 4 added: Refactor project structure (split EF layer, rename to FilamentCatalog.Service, extract endpoints from Program.cs)
+- Phase 5 added: Spool duplication — duplicate button on spool rows, prefilled Add Spool modal
 
 ### Pending Todos
 

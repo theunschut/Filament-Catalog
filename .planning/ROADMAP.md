@@ -10,6 +10,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [ ] **Phase 2: Spool & Owner CRUD** - Full spool management, owner management, and summary/balance views in the browser
 - [ ] **Phase 3: Bambu Catalog Sync** - Shopify JSON API sync with ImageSharp color extraction and sync-status UI
 - [x] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI *(completed 2026-05-01)*
+- [ ] **Phase 5: Spool Duplication** - Duplicate button on spool rows opens Add Spool modal pre-filled from the source spool, letting the user tweak fields before saving as a new spool
 
 ## Phase Details
 
@@ -110,6 +111,19 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 **UI hint**: no
 
+### Phase 5: Spool Duplication
+**Goal**: Users can duplicate an existing spool from the spool list — a duplicate button on each row opens the Add Spool modal pre-filled with the source spool's fields, allowing edits before saving as a new spool.
+**Depends on**: Phase 2
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. Each spool row has a duplicate button (alongside the existing edit button)
+  2. Clicking the button opens the Add Spool modal with all fields pre-filled from the source spool
+  3. The user can modify any field before clicking Save
+  4. Saving creates a new spool (the original is unchanged)
+**Plans**: TBD
+
+**UI hint**: yes
+
 ## Progress Table
 
 | Phase | Plans Complete | Status | Completed |
@@ -118,3 +132,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
+| 5. Spool Duplication | 0/? | Not started | - |
