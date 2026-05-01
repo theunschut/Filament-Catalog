@@ -13,6 +13,8 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 ### Validated
 
 - [x] App runs as a Windows service (auto-starts with Windows, always at localhost:5000) — *Validated in Phase 1: Foundation*
+- [x] Solution is split into two projects (FilamentCatalog.EntityFramework data layer + FilamentCatalog.Service web host) with clean architecture boundaries — *Validated in Phase 4: Refactor Project Structure*
+- [x] API endpoints organized into [ApiController] controllers with constructor-injected service interfaces; Program.cs is pure bootstrapping — *Validated in Phase 4: Refactor Project Structure*
 
 ### Active
 
@@ -45,7 +47,7 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 
 ## Constraints
 
-- **Tech stack**: .NET 10, ASP.NET Core minimal API — already decided, spec written
+- **Tech stack**: .NET 10, ASP.NET Core with [ApiController] MVC controllers — decided; Phase 4 migrated from minimal API to controller-based architecture
 - **Database**: SQLite via EF Core — local file, zero infrastructure
 - **Deployment**: Windows service via `UseWindowsService()` — auto-starts, accessible at localhost:5000
 - **Frontend**: Plain HTML/CSS/JS — no build toolchain, no framework
@@ -77,4 +79,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-01 after Phase 1 completion*
+*Last updated: 2026-05-01 after Phase 4 completion*
