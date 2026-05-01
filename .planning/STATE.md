@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 2 — Spool & Owner CRUD (Phase 4 planned)
+**Current focus:** Phase 3 — Bambu Catalog Sync (next up)
 
 ## Current Position
 
-Phase: 2 of 3 (Spool & Owner CRUD)
-Plan: 4 of 4 in current phase
-Status: Verifying (all plans complete, running phase verification)
-Last activity: 2026-05-01 — Wave 3 complete: 02-04 (JS feature modules) merged — all 4 plans done
+Phase: 4 of 4 complete (Refactor Project Structure)
+Plan: 3 of 3 in current phase
+Status: Complete — Phase 4 verified and closed
+Last activity: 2026-05-01 — Phase 4 complete: two-project solution, service layer + [ApiController] controllers
 
-Progress: [███░░░░░░░] 33%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
@@ -72,4 +72,4 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-01
-Stopped at: Phase 2 planned (4 plans in 3 waves). Ready to execute Phase 2.
+Stopped at: Phase 4 complete. Phase 2 (Spool & Owner CRUD) still needs verification + Phase 3 (Bambu Catalog Sync) not yet started. Human UAT pending for phase 4 (enum serialization + endpoint smoke test).

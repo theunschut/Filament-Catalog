@@ -9,7 +9,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [x] **Phase 1: Foundation** - Runnable Windows service with data layer, EF Core migrations, and seeded "Me" owner *(completed 2026-05-01)*
 - [ ] **Phase 2: Spool & Owner CRUD** - Full spool management, owner management, and summary/balance views in the browser
 - [ ] **Phase 3: Bambu Catalog Sync** - Shopify JSON API sync with ImageSharp color extraction and sync-status UI
-- [ ] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI
+- [x] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI *(completed 2026-05-01)*
 
 ## Phase Details
 
@@ -117,4 +117,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
-| 4. Refactor Project Structure | 3/3 | In progress | - |
+| 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
