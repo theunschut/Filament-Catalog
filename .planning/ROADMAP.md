@@ -101,7 +101,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [x] 04-02-PLAN.md — Rename FilamentCatalog → FilamentCatalog.Service, update solution file, add ProjectReference, delete duplicate EF artifacts, verify build
 
 **Wave 3** *(blocked on 04-02)*:
-- [ ] 04-03-PLAN.md — Service layer (IOwnerService, ISpoolService, ISummaryService) + [ApiController] controllers (OwnersController, SpoolsController, SummaryController, BalanceController) + domain exceptions; Program.cs wires DI + app.MapControllers()
+- [x] 04-03-PLAN.md — Service layer (IOwnerService, ISpoolService, ISummaryService) + [ApiController] controllers (OwnersController, SpoolsController, SummaryController, BalanceController) + domain exceptions; Program.cs wires DI + app.MapControllers()
 
 **Cross-cutting constraints:**
 - All endpoint handler bodies copied verbatim — no logic changes during refactor
@@ -117,4 +117,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
-| 4. Refactor Project Structure | 2/3 | In progress | - |
+| 4. Refactor Project Structure | 3/3 | In progress | - |
