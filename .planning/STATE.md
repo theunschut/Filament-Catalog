@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 2 — Spool & Owner CRUD
+**Current focus:** Phase 2 — Spool & Owner CRUD (Phase 4 planned)
 
 ## Current Position
 
@@ -50,6 +50,10 @@ Recent decisions affecting current work:
 - SQLite path: AppContext.BaseDirectory (not relative working directory)
 - Static files: UseDefaultFiles() + UseStaticFiles()
 - Background sync: BackgroundService + Channel<SyncJob> pattern
+
+### Roadmap Evolution
+
+- Phase 4 added: Refactor project structure (split EF layer, rename to FilamentCatalog.Service, extract endpoints from Program.cs)
 
 ### Pending Todos
 
