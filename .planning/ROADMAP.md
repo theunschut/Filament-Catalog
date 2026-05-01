@@ -120,7 +120,10 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
   2. Clicking the button opens the Add Spool modal with all fields pre-filled from the source spool
   3. The user can modify any field before clicking Save
   4. Saving creates a new spool (the original is unchanged)
-**Plans**: TBD
+**Plans**: 1 plan
+
+**Wave 1:**
+- [ ] 05-01-PLAN.md — Duplicate button in buildSpoolRow + openDuplicateDialog function in spools.js + .spool-duplicate-btn CSS class in app.css
 
 **UI hint**: yes
 
@@ -132,4 +135,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
-| 5. Spool Duplication | 0/? | Not started | - |
+| 5. Spool Duplication | 0/1 | Not started | - |
