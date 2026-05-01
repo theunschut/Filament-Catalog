@@ -95,7 +95,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Plans**: 3 plans
 
 **Wave 1:**
-- [ ] 04-01-PLAN.md — Create FilamentCatalog.EntityFramework project (class library, copy models + AppDbContext + migrations)
+- [x] 04-01-PLAN.md — Create FilamentCatalog.EntityFramework project (class library, copy models + AppDbContext + migrations)
 
 **Wave 2** *(blocked on 04-01)*:
 - [ ] 04-02-PLAN.md — Rename FilamentCatalog → FilamentCatalog.Service, update solution file, add ProjectReference, delete duplicate EF artifacts, verify build
@@ -117,4 +117,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
-| 4. Refactor Project Structure | 0/3 | Planned | - |
+| 4. Refactor Project Structure | 1/3 | In progress | - |
