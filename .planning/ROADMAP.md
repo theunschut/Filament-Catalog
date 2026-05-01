@@ -9,6 +9,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [x] **Phase 1: Foundation** - Runnable Windows service with data layer, EF Core migrations, and seeded "Me" owner *(completed 2026-05-01)*
 - [ ] **Phase 2: Spool & Owner CRUD** - Full spool management, owner management, and summary/balance views in the browser
 - [ ] **Phase 3: Bambu Catalog Sync** - Shopify JSON API sync with ImageSharp color extraction and sync-status UI
+- [ ] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI
 
 ## Phase Details
 
@@ -82,6 +83,33 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Plans**: TBD
 **UI hint**: yes
 
+### Phase 4: Refactor Project Structure
+**Goal**: The solution is split into two projects (FilamentCatalog.EntityFramework and FilamentCatalog.Service), API endpoints are organized into service/controller classes outside of Program.cs, and DI is used throughout.
+**Depends on**: Phase 3
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. A separate FilamentCatalog.EntityFramework project contains all EF Core models, DbContext, and migrations; the service project references it
+  2. The main project is renamed FilamentCatalog.Service and Program.cs contains only app bootstrapping (no inline endpoint handlers)
+  3. API endpoints are organized into dedicated service or controller classes with constructor-injected dependencies
+  4. The app still builds, runs as a Windows service, and all existing features work correctly after refactor
+**Plans**: 3 plans
+
+**Wave 1:**
+- [ ] 04-01-PLAN.md — Create FilamentCatalog.EntityFramework project (class library, copy models + AppDbContext + migrations)
+
+**Wave 2** *(blocked on 04-01)*:
+- [ ] 04-02-PLAN.md — Rename FilamentCatalog → FilamentCatalog.Service, update solution file, add ProjectReference, delete duplicate EF artifacts, verify build
+
+**Wave 3** *(blocked on 04-02)*:
+- [ ] 04-03-PLAN.md — Extract endpoints into OwnerEndpoints.cs / SpoolEndpoints.cs / SummaryEndpoints.cs extension methods; move request records to Models/Requests/; rewrite Program.cs to bootstrapping only
+
+**Cross-cutting constraints:**
+- All endpoint handler bodies copied verbatim — no logic changes during refactor
+- No namespace declarations (consistent with existing codebase style using implicit global namespace)
+- `UseDefaultFiles()` before `UseStaticFiles()` — middleware order preserved in rewritten Program.cs
+
+**UI hint**: no
+
 ## Progress Table
 
 | Phase | Plans Complete | Status | Completed |
@@ -89,3 +117,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
+| 4. Refactor Project Structure | 0/3 | Not started | - |
