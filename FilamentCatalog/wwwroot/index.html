@@ -4,19 +4,159 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Filament Catalog</title>
-  <style>
-    /* Phase 1 placeholder styles — extend in Phase 2 */
-    body { font-family: system-ui, sans-serif; margin: 0; padding: 2rem; background: #f5f5f5; }
-    h1 { color: #333; }
-    .status { color: #666; font-size: 0.9rem; }
-  </style>
+  <link rel="stylesheet" href="/css/app.css" />
 </head>
 <body>
-  <h1>Filament Catalog</h1>
-  <!-- Phase 2: replace this placeholder with actual UI -->
-  <main>
-    <p class="status">Service is running.</p>
-  </main>
-  <!-- Phase 2: add ES module scripts here -->
+
+  <!-- Sticky summary bar -->
+  <header id="summary-bar">
+    <div class="summary-left">
+      <h1 class="summary-title">Filament Catalog</h1>
+      <div class="stat-cell">
+        <span class="stat-label">Total Spools</span>
+        <span class="stat-value" id="stat-total-spools">—</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-label">My Spools</span>
+        <span class="stat-value" id="stat-my-spools">—</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-label">Total Value</span>
+        <span class="stat-value" id="stat-total-value">—</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-label">Total Owed</span>
+        <span class="stat-value" id="stat-total-owed">—</span>
+      </div>
+    </div>
+    <button id="manage-owners-btn" aria-label="Manage owners" title="Manage owners">&#9881;</button>
+  </header>
+
+  <!-- Filter bar -->
+  <div id="filter-bar">
+    <select id="filter-owner">
+      <option value="">All owners</option>
+    </select>
+    <select id="filter-material">
+      <option value="">All materials</option>
+    </select>
+    <div class="chip-group" id="chip-group-spool">
+      <button type="button" class="chip" data-status-filter="spool" data-value="Sealed">Sealed</button>
+      <button type="button" class="chip" data-status-filter="spool" data-value="Active">Active</button>
+      <button type="button" class="chip" data-status-filter="spool" data-value="Empty">Empty</button>
+    </div>
+    <div class="chip-group" id="chip-group-payment">
+      <button type="button" class="chip" data-status-filter="payment" data-value="Paid">Paid</button>
+      <button type="button" class="chip" data-status-filter="payment" data-value="Unpaid">Unpaid</button>
+      <button type="button" class="chip" data-status-filter="payment" data-value="Partial">Partial</button>
+    </div>
+    <input type="search" id="filter-search" placeholder="Search name, material, notes&#8230;" />
+    <button type="button" id="add-spool-btn">Add Spool</button>
+  </div>
+
+  <!-- Spool list -->
+  <main id="spool-list"></main>
+
+  <!-- Balance section -->
+  <details open id="balance-section">
+    <summary>Balance Overview</summary>
+    <table id="balance-table">
+      <thead>
+        <tr>
+          <th>Owner</th>
+          <th>Spools</th>
+          <th>Value</th>
+          <th>Owed</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </details>
+
+  <!-- Spool add/edit dialog -->
+  <dialog id="spool-dialog">
+    <div class="modal-header">
+      <h2 class="modal-title" id="spool-dialog-title">Add Spool</h2>
+    </div>
+    <div class="modal-body">
+      <div id="spool-error" class="error-banner" style="display:none"></div>
+      <form id="spool-form" novalidate>
+        <div class="form-group">
+          <label for="spool-name">Name <span aria-hidden="true">*</span></label>
+          <input type="text" id="spool-name" required placeholder="e.g. Bambu PLA Basic" />
+        </div>
+        <div class="form-group">
+          <label for="spool-material">Material <span aria-hidden="true">*</span></label>
+          <input type="text" id="spool-material" required placeholder="e.g. PLA" />
+        </div>
+        <div class="form-group">
+          <label>Color</label>
+          <div class="color-row">
+            <input type="color" id="spool-color-picker" value="#888888" />
+            <input type="text" id="spool-color-hex" maxlength="7" pattern="^#[0-9A-Fa-f]{6}$" placeholder="#888888" value="#888888" />
+            <div id="spool-color-swatch"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="spool-owner">Owner <span aria-hidden="true">*</span></label>
+          <select id="spool-owner" required></select>
+        </div>
+        <div class="form-group">
+          <label for="spool-weight">Weight (g)</label>
+          <input type="number" id="spool-weight" min="1" placeholder="e.g. 1000" />
+        </div>
+        <div class="form-group">
+          <label for="spool-price">Price paid (&#8364;)</label>
+          <input type="number" id="spool-price" min="0" step="0.01" placeholder="e.g. 24.99" />
+        </div>
+        <div class="form-group">
+          <label for="spool-status">Spool status</label>
+          <select id="spool-status">
+            <option value="Sealed">Sealed</option>
+            <option value="Active">Active</option>
+            <option value="Empty">Empty</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="spool-payment">Payment status</label>
+          <select id="spool-payment">
+            <option value="Unpaid">Unpaid</option>
+            <option value="Paid">Paid</option>
+            <option value="Partial">Partial</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="spool-notes">Notes</label>
+          <textarea id="spool-notes" rows="2" placeholder="Optional notes"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="spool-delete-btn" class="btn-destructive-outline" style="display:none">Delete Spool</button>
+      <div id="spool-delete-confirm" style="display:none">
+        <p>Are you sure? This cannot be undone.</p>
+        <button type="button" id="spool-confirm-delete-btn" class="btn-destructive">Confirm Delete</button>
+      </div>
+      <button type="button" id="spool-cancel-btn" class="btn-secondary" style="margin-left:auto">Discard Changes</button>
+      <button type="button" id="spool-save-btn" class="btn-primary">Save Spool</button>
+    </div>
+  </dialog>
+
+  <!-- Owner management dialog -->
+  <dialog id="owner-dialog">
+    <div class="modal-header">
+      <h2 class="modal-title">Manage Owners</h2>
+    </div>
+    <div class="modal-body">
+      <div id="owner-list"></div>
+      <div id="owner-error" class="error-banner" style="display:none"></div>
+      <div class="owner-add-form">
+        <input type="text" id="owner-name-input" placeholder="Owner name" />
+        <button type="button" id="owner-add-btn" class="btn-primary">Add Owner</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="/js/app.js"></script>
 </body>
 </html>
