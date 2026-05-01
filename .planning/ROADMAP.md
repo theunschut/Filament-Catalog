@@ -135,4 +135,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
 | 3. Bambu Catalog Sync | 0/? | Not started | - |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
-| 5. Spool Duplication | 0/1 | Not started | - |
+| 5. Spool Duplication | 0/1 | Ready to execute | - |
