@@ -39,8 +39,7 @@ Declared values (all pre-existing tokens from app.css — no new tokens needed):
 | md | 16px | Default element spacing, modal padding (--space-md) |
 | lg | 24px | Section padding (--space-lg) |
 | xl | 32px | Layout gaps (--space-xl) |
-
-Exceptions: Duplicate button uses 2px 8px padding (matching existing .spool-edit-btn pattern) — not a spacing token exception, just button sizing.
+| Exceptions | none | — |
 
 ---
 
