@@ -101,7 +101,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [ ] 04-02-PLAN.md — Rename FilamentCatalog → FilamentCatalog.Service, update solution file, add ProjectReference, delete duplicate EF artifacts, verify build
 
 **Wave 3** *(blocked on 04-02)*:
-- [ ] 04-03-PLAN.md — Extract endpoints into OwnerEndpoints.cs / SpoolEndpoints.cs / SummaryEndpoints.cs extension methods; move request records to Models/Requests/; rewrite Program.cs to bootstrapping only
+- [ ] 04-03-PLAN.md — Service layer (IOwnerService, ISpoolService, ISummaryService) + [ApiController] controllers (OwnersController, SpoolsController, SummaryController, BalanceController) + domain exceptions; Program.cs wires DI + app.MapControllers()
 
 **Cross-cutting constraints:**
 - All endpoint handler bodies copied verbatim — no logic changes during refactor
