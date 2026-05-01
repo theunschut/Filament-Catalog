@@ -72,6 +72,104 @@ try
         return Results.NoContent();
     });
 
+    // ---- Spools ----
+    app.MapGet("/api/spools", async (AppDbContext db) =>
+        await db.Spools.Include(s => s.Owner).OrderBy(s => s.CreatedAt).ToListAsync());
+
+    app.MapPost("/api/spools", async (AppDbContext db, SpoolCreateRequest req) =>
+    {
+        if (string.IsNullOrWhiteSpace(req.Name))
+            return Results.UnprocessableEntity(new { error = "Name is required." });
+        if (string.IsNullOrWhiteSpace(req.Material))
+            return Results.UnprocessableEntity(new { error = "Material is required." });
+        var ownerExists = await db.Owners.AnyAsync(o => o.Id == req.OwnerId);
+        if (!ownerExists) return Results.UnprocessableEntity(new { error = "Owner not found." });
+
+        var colorHex = string.IsNullOrWhiteSpace(req.ColorHex) ? "#888888" : req.ColorHex;
+        var spool = new Spool
+        {
+            Name = req.Name.Trim(),
+            Material = req.Material.Trim(),
+            ColorHex = colorHex,
+            OwnerId = req.OwnerId,
+            WeightGrams = req.WeightGrams,
+            PricePaid = req.PricePaid,
+            PaymentStatus = req.PaymentStatus,
+            SpoolStatus = req.SpoolStatus,
+            Notes = req.Notes?.Trim(),
+            CreatedAt = DateTime.UtcNow
+        };
+        db.Spools.Add(spool);
+        await db.SaveChangesAsync();
+        return Results.Created($"/api/spools/{spool.Id}", spool);
+    });
+
+    app.MapPut("/api/spools/{id:int}", async (AppDbContext db, int id, SpoolUpdateRequest req) =>
+    {
+        var spool = await db.Spools.FindAsync(id);
+        if (spool is null) return Results.NotFound(new { error = "Spool not found." });
+        if (string.IsNullOrWhiteSpace(req.Name))
+            return Results.UnprocessableEntity(new { error = "Name is required." });
+        if (string.IsNullOrWhiteSpace(req.Material))
+            return Results.UnprocessableEntity(new { error = "Material is required." });
+        var ownerExists = await db.Owners.AnyAsync(o => o.Id == req.OwnerId);
+        if (!ownerExists) return Results.UnprocessableEntity(new { error = "Owner not found." });
+
+        spool.Name = req.Name.Trim();
+        spool.Material = req.Material.Trim();
+        spool.ColorHex = string.IsNullOrWhiteSpace(req.ColorHex) ? "#888888" : req.ColorHex;
+        spool.OwnerId = req.OwnerId;
+        spool.WeightGrams = req.WeightGrams;
+        spool.PricePaid = req.PricePaid;
+        spool.PaymentStatus = req.PaymentStatus;
+        spool.SpoolStatus = req.SpoolStatus;
+        spool.Notes = req.Notes?.Trim();
+        await db.SaveChangesAsync();
+        return Results.Ok(spool);
+    });
+
+    app.MapDelete("/api/spools/{id:int}", async (AppDbContext db, int id) =>
+    {
+        var spool = await db.Spools.FindAsync(id);
+        if (spool is null) return Results.NotFound(new { error = "Spool not found." });
+        db.Spools.Remove(spool);
+        await db.SaveChangesAsync();
+        return Results.NoContent();
+    });
+
+    // ---- Summary ----
+    app.MapGet("/api/summary", async (AppDbContext db) =>
+    {
+        var meOwner = await db.Owners.FirstOrDefaultAsync(o => o.IsMe);
+        var spools = await db.Spools.ToListAsync();
+        var mySpoolCount = meOwner is null ? 0 : spools.Count(s => s.OwnerId == meOwner.Id);
+        var totalValue = spools.Where(s => s.PricePaid.HasValue).Sum(s => s.PricePaid!.Value);
+        var totalOwed = spools
+            .Where(s => meOwner is not null && s.OwnerId != meOwner.Id
+                        && s.PaymentStatus != PaymentStatus.Paid
+                        && s.PricePaid.HasValue)
+            .Sum(s => s.PricePaid!.Value);
+        return Results.Ok(new { totalSpools = spools.Count, mySpools = mySpoolCount, totalValue, totalOwed });
+    });
+
+    // ---- Balance ----
+    app.MapGet("/api/balance", async (AppDbContext db) =>
+    {
+        var nonMeOwners = await db.Owners.Where(o => !o.IsMe).OrderBy(o => o.Name).ToListAsync();
+        var allSpools = await db.Spools.ToListAsync();
+        var rows = nonMeOwners.Select(owner =>
+        {
+            var ownerSpools = allSpools.Where(s => s.OwnerId == owner.Id).ToList();
+            var value = ownerSpools.Where(s => s.PricePaid.HasValue).Sum(s => s.PricePaid!.Value);
+            var owed = ownerSpools
+                .Where(s => s.PaymentStatus != PaymentStatus.Paid && s.PricePaid.HasValue)
+                .Sum(s => s.PricePaid!.Value);
+            var hasUnpriced = ownerSpools.Any(s => !s.PricePaid.HasValue);
+            return new { ownerId = owner.Id, ownerName = owner.Name, spoolCount = ownerSpools.Count, value, owed, hasUnpriced };
+        });
+        return Results.Ok(rows);
+    });
+
     await app.RunAsync();
 }
 catch (Exception ex)
@@ -105,3 +203,13 @@ static async Task SeedAsync(AppDbContext db)
 }
 
 record OwnerCreateRequest(string Name);
+
+record SpoolCreateRequest(
+    string Name, string Material, string? ColorHex, int OwnerId,
+    int? WeightGrams, decimal? PricePaid,
+    PaymentStatus PaymentStatus, SpoolStatus SpoolStatus, string? Notes);
+
+record SpoolUpdateRequest(
+    string Name, string Material, string? ColorHex, int OwnerId,
+    int? WeightGrams, decimal? PricePaid,
+    PaymentStatus PaymentStatus, SpoolStatus SpoolStatus, string? Notes);
