@@ -5,6 +5,12 @@ import { renderSpools, initSpoolDialog, initChipFilters, onSpoolDialogClose, rep
 import { initOwnerModal } from './owners.js';
 import { renderSummary, renderBalance, refreshSummaryAndBalance } from './summary.js';
 
+// ---- DOM refs ----
+const syncCatalogBtn   = document.getElementById('sync-catalog-btn');
+const statLastSynced   = document.getElementById('stat-last-synced');
+const catalogNotice    = document.getElementById('catalog-empty-notice');
+const addSpoolBtn      = document.getElementById('add-spool-btn');
+
 // ---- Page-load init ----
 try {
     const [spools, owners, summary, balance] = await Promise.all([
@@ -56,10 +62,6 @@ document.addEventListener('owners-updated', async () => {
 });
 
 // ---- Sync button and status display ----
-const syncCatalogBtn   = document.getElementById('sync-catalog-btn');
-const statLastSynced   = document.getElementById('stat-last-synced');
-const catalogNotice    = document.getElementById('catalog-empty-notice');
-const addSpoolBtn      = document.getElementById('add-spool-btn');
 
 // Format ISO UTC date string for display per UI-SPEC copywriting contract
 function formatLastSynced(isoString) {

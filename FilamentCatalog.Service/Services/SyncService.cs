@@ -12,8 +12,7 @@ public class SyncService(
     HttpClient httpClient,
     ILogger<SyncService> logger) : ISyncService
 {
-    // Shopify store URL — parameterized per RESEARCH.md anti-patterns
-    private const string ShopifyBaseUrl = "https://bambulab.eu";
+    private const string ShopifyBaseUrl = "https://bambulab-eu.myshopify.com";
 
     public async Task SyncCatalogAsync(CancellationToken cancellationToken)
     {
