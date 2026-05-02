@@ -89,3 +89,37 @@ export async function getBalance() {
     if (!res.ok) throw new Error(`GET /api/balance failed: ${res.status}`);
     return res.json();
 }
+
+// ---- Sync ----
+
+export async function startSync() {
+    const res = await fetch('/api/sync/start', { method: 'POST' });
+    if (!res.ok) throw new Error(`POST /api/sync/start failed: ${res.status}`);
+    // 202 Accepted — no body to parse
+}
+
+export async function getSyncStatus() {
+    const res = await fetch('/api/sync/status');
+    if (!res.ok) throw new Error(`GET /api/sync/status failed: ${res.status}`);
+    return res.json();
+}
+
+// ---- Catalog ----
+
+export async function getCatalogCount() {
+    const res = await fetch('/api/catalog/count');
+    if (!res.ok) throw new Error(`GET /api/catalog/count failed: ${res.status}`);
+    return res.json(); // Returns { count: number }
+}
+
+export async function getCatalogMaterials() {
+    const res = await fetch('/api/catalog/materials');
+    if (!res.ok) throw new Error(`GET /api/catalog/materials failed: ${res.status}`);
+    return res.json(); // Returns string[]
+}
+
+export async function getCatalogColors(material) {
+    const res = await fetch(`/api/catalog/colors?material=${encodeURIComponent(material)}`);
+    if (!res.ok) throw new Error(`GET /api/catalog/colors failed: ${res.status}`);
+    return res.json(); // Returns [{ id, colorName, colorHex, productTitle }]
+}
