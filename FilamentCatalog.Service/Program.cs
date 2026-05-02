@@ -42,7 +42,11 @@ try
         });
     builder.Services.AddSingleton(syncChannel);
     builder.Services.AddSingleton<SyncStateService>();
-    builder.Services.AddHttpClient<SyncService>();   // Named HttpClient scoped to SyncService
+    builder.Services.AddHttpClient<SyncService>(client =>
+    {
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36");
+    });
     builder.Services.AddScoped<ISyncService, SyncService>();
     builder.Services.AddHostedService<SyncBackgroundService>();
 
