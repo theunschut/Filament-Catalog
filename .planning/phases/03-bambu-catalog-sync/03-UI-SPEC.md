@@ -51,20 +51,18 @@ Source: app.css :root, detected from codebase scan.
 
 ## Typography
 
-All sizes are already declared in the codebase. This phase introduces no new type roles.
+All sizes are already declared in the codebase. This phase introduces no new type roles. Only sizes directly referenced by Phase 3 components are declared here.
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Body | 14px | 400 | 1.5 | Spool dialog labels, banner text, select options |
-| Label | 13px | 600 | 1 | Form group labels (.form-group label), stat labels |
 | Stat label | 12px | 600 | 1 | .stat-label in header — "Last synced" label uses this |
-| Stat value | 20px | 600 | 1.2 | .stat-value — last-synced timestamp value uses this |
+| Body | 14px | 400 | 1.5 | Spool dialog labels, banner text, select options, button labels |
 | Heading | 18px | 600 | 1 | .modal-title ("Add Spool", "Edit Spool", "Duplicate Spool") |
-| App title | 16px | 600 | 1 | .summary-title — unchanged |
+| Stat value | 20px | 600 | 1.2 | .stat-value — last-synced timestamp value uses this |
 
 Sync status copy inside the header stat cell uses .stat-label (12px/600) + .stat-value (20px/600), identical to existing Total Spools, Total Value cells.
 
-Source: app.css body, .stat-label, .stat-value, .modal-title, .form-group label
+Source: app.css body, .stat-label, .stat-value, .modal-title
 
 ---
 
@@ -76,17 +74,18 @@ All tokens already declared in app.css :root. No new colors introduced in this p
 |------|---------------|-------|
 | Dominant (60%) | --color-bg #f5f5f5 | Page background |
 | Secondary (30%) | --color-surface #ffffff | Header, filter bar, spool rows, modal surfaces |
-| Accent (10%) | --color-accent #2563eb | "Sync Bambu catalog" button, "Add Spool" button (re-enabled state), focus outlines, .chip.active |
+| Accent (10%) | --color-accent #2563eb | "Add Spool" button (.btn-primary), active filter chips (.chip.active), focus outlines |
 | Destructive | --color-destructive #dc2626 | Delete Spool actions only — not used for sync errors |
 | Muted | --color-muted #6b7280 | Stat labels, gear icon, disabled-state text |
 | Warning | --color-warning #f59e0b | Balance rows with missing price (.warning-icon) |
 | Border | --color-border #e2e8f0 | All borders, dividers |
 
 Accent reserved for:
-- "Sync Bambu catalog" button (idle + hover state — same .btn-primary class as Add Spool)
-- "Add Spool" button re-enabled state (same .btn-primary)
+- "Add Spool" button (.btn-primary uses var(--color-accent) background)
 - Active filter chips (.chip.active)
 - Focus outlines (outline: 2px solid var(--color-accent))
+
+Note: The "Sync Bambu catalog" button uses `.btn-secondary` (--color-surface background, --color-border border) — it does NOT use accent color. Accent is reserved for the primary "Add Spool" action only.
 
 Disabled state for "Add Spool" button: `opacity: 0.5; cursor: not-allowed;` — the accent color is muted by opacity, not replaced. This follows the least-surprise principle for native button[disabled].
 
