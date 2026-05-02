@@ -1,6 +1,7 @@
 // spools.js — spool list rendering, filter logic, add/edit/delete dialog
 
 import { getSpools, createSpool, updateSpool, deleteSpool } from './api.js';
+import { initializeCatalogSelects, resetCatalogSelects, restoreCatalogSelectsFromSpool } from './catalog.js';
 
 // Module-level state
 let allSpools = [];
@@ -23,7 +24,7 @@ const dialogTitle   = document.getElementById('spool-dialog-title');
 const form          = document.getElementById('spool-form');
 const errorEl       = document.getElementById('spool-error');
 const nameInput     = document.getElementById('spool-name');
-const matInput      = document.getElementById('spool-material');
+const materialSelect = document.getElementById('spool-catalog-material');
 const colorPicker   = document.getElementById('spool-color-picker');
 const colorHexInput = document.getElementById('spool-color-hex');
 const colorSwatch   = document.getElementById('spool-color-swatch');
@@ -263,6 +264,7 @@ function clearDialogError() {
 function resetFormForAdd() {
     dialogTitle.textContent = 'Add Spool';
     form.reset();
+    resetCatalogSelects(); // reset two-step catalog selects to placeholder state
     colorPicker.value = '#888888';
     colorHexInput.value = '#888888';
     colorSwatch.style.background = '#888888';
@@ -278,7 +280,6 @@ function resetFormForAdd() {
 function populateFormForEdit(spool) {
     dialogTitle.textContent = 'Edit Spool';
     nameInput.value = spool.name;
-    matInput.value = spool.material;
     const hex = spool.colorHex ?? '#888888';
     colorPicker.value = HEX_RE.test(hex) ? hex : '#888888';
     colorHexInput.value = hex;
@@ -298,6 +299,7 @@ function populateFormForEdit(spool) {
 function openAddDialog() {
     resetFormForAdd();
     repopulateOwnerSelect(allOwners);
+    initializeCatalogSelects(); // populate material select from catalog
     dialog.showModal();
 }
 
@@ -305,15 +307,16 @@ function openEditDialog(spool) {
     resetFormForAdd();
     repopulateOwnerSelect(allOwners);
     populateFormForEdit(spool);
+    restoreCatalogSelectsFromSpool(spool); // async but fire-and-forget — restores after colors load
     dialog.showModal();
 }
 
 function openDuplicateDialog(spool) {
     resetFormForAdd();
     repopulateOwnerSelect(allOwners);
+    restoreCatalogSelectsFromSpool(spool); // async but fire-and-forget — restores after colors load
     // Pre-fill all fields from source spool (mirrors populateFormForEdit but stays in add mode)
     nameInput.value     = spool.name;
-    matInput.value      = spool.material;
     const hex = HEX_RE.test(spool.colorHex ?? '') ? spool.colorHex : '#888888';
     colorPicker.value   = hex;
     colorHexInput.value = hex;
@@ -332,7 +335,7 @@ function openDuplicateDialog(spool) {
 function buildSpoolPayload() {
     return {
         name:          nameInput.value.trim(),
-        material:      matInput.value.trim(),
+        material:      materialSelect.value.trim(),
         colorHex:      getColorHex(),
         ownerId:       parseInt(ownerSelect.value),
         weightGrams:   weightInput.value ? parseInt(weightInput.value) : null,
@@ -351,7 +354,7 @@ saveBtn.addEventListener('click', async () => {
 
     // Client-side required field check (mirrors server validation)
     if (!payload.name)     { showDialogError('Name is required.'); return; }
-    if (!payload.material) { showDialogError('Material is required.'); return; }
+    if (!payload.material) { showDialogError('Select a material to continue.'); return; }
     if (!payload.ownerId)  { showDialogError('Owner is required.'); return; }
 
     try {
