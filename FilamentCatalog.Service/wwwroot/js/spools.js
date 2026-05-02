@@ -324,11 +324,7 @@ function openDuplicateDialog(spool) {
     statusSelect.value  = spool.spoolStatus;
     paymentSelect.value = spool.paymentStatus;
     notesInput.value    = spool.notes ?? '';
-    // Duplicate mode: title changes, stays in add mode (no editId, no delete button)
-    dialogTitle.textContent  = 'Duplicate Spool';
-    dialog.dataset.editId    = '';
-    deleteBtn.style.display  = 'none';
-    deleteConfirm.style.display = 'none';
+    dialogTitle.textContent = 'Duplicate Spool';  // override 'Add Spool' set by resetFormForAdd
     dialog.showModal();
 }
 
