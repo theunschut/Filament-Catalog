@@ -28,6 +28,11 @@
         <span class="stat-label">Total Owed</span>
         <span class="stat-value" id="stat-total-owed">—</span>
       </div>
+      <button id="sync-catalog-btn" class="btn-secondary" type="button" aria-label="Sync Bambu catalog">Sync Bambu catalog</button>
+      <div class="stat-cell" id="sync-stat">
+        <span class="stat-label">Last synced</span>
+        <span class="stat-value" id="stat-last-synced">Never</span>
+      </div>
     </div>
     <button id="manage-owners-btn" aria-label="Manage owners" title="Manage owners">&#9881;</button>
   </header>
@@ -51,6 +56,7 @@
       <button type="button" class="chip" data-status-filter="payment" data-value="Partial">Partial</button>
     </div>
     <input type="search" id="filter-search" placeholder="Search name, material, notes&#8230;" />
+    <p id="catalog-empty-notice" class="info-banner" hidden>Sync the Bambu catalog first to enable adding spools.</p>
     <button type="button" id="add-spool-btn">Add Spool</button>
   </div>
 
@@ -81,13 +87,21 @@
     <div class="modal-body">
       <div id="spool-error" class="error-banner" style="display:none"></div>
       <form id="spool-form" novalidate>
+        <div class="form-group" id="catalog-material-group">
+          <label for="spool-catalog-material">Material <span aria-hidden="true">*</span></label>
+          <select id="spool-catalog-material" required>
+            <option value="">&#8212; Select material &#8212;</option>
+          </select>
+        </div>
+        <div class="form-group" id="catalog-color-group">
+          <label for="spool-catalog-color">Color variant <span aria-hidden="true">*</span></label>
+          <select id="spool-catalog-color" required disabled>
+            <option value="">&#8212; Select material first &#8212;</option>
+          </select>
+        </div>
         <div class="form-group">
           <label for="spool-name">Name <span aria-hidden="true">*</span></label>
           <input type="text" id="spool-name" required placeholder="e.g. Bambu PLA Basic" />
-        </div>
-        <div class="form-group">
-          <label for="spool-material">Material <span aria-hidden="true">*</span></label>
-          <input type="text" id="spool-material" required placeholder="e.g. PLA" />
         </div>
         <div class="form-group">
           <label>Color</label>
