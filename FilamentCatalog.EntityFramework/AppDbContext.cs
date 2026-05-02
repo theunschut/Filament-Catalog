@@ -6,6 +6,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Owner> Owners => Set<Owner>();
     public DbSet<Spool> Spools => Set<Spool>();
+    public DbSet<BambuProduct> BambuProducts => Set<BambuProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -14,5 +15,15 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(s => s.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<BambuProduct>()
+            .HasIndex(p => new { p.Name, p.Material })
+            .IsUnique();
+
+        modelBuilder.Entity<BambuProduct>()
+            .HasIndex(p => p.Material);
+
+        modelBuilder.Entity<BambuProduct>()
+            .HasIndex(p => p.LastSyncedAt);
     }
 }
