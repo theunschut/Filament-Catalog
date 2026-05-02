@@ -2,6 +2,7 @@ using Serilog;
 using Serilog.Events;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using System.Threading.Channels;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -32,6 +33,18 @@ try
     builder.Services.AddScoped<IOwnerService, OwnerService>();
     builder.Services.AddScoped<ISpoolService, SpoolService>();
     builder.Services.AddScoped<ISummaryService, SummaryService>();
+
+    // ---- Sync pipeline DI (per CLAUDE.md BackgroundService + Channel pattern) ----
+    var syncChannel = Channel.CreateBounded<SyncJob>(
+        new BoundedChannelOptions(capacity: 1)
+        {
+            FullMode = BoundedChannelFullMode.DropNewest
+        });
+    builder.Services.AddSingleton(syncChannel);
+    builder.Services.AddSingleton<SyncStateService>();
+    builder.Services.AddHttpClient<SyncService>();   // Named HttpClient scoped to SyncService
+    builder.Services.AddScoped<ISyncService, SyncService>();
+    builder.Services.AddHostedService<SyncBackgroundService>();
 
     builder.Services.AddControllers()
         .AddJsonOptions(o =>
