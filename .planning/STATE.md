@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 3 — Bambu Catalog Sync (next up)
+**Current focus:** Phase 5 complete — all planned phases done; Phase 2 & 3 still pending
 
 ## Current Position
 
 Phase: 5 of 5 planned (Spool Duplication)
-Plan: 0 of 1 in current phase
-Status: Ready to execute — Phase 5 planned (1 plan, 1 wave)
-Last activity: 2026-05-01 — Phase 5 planned: duplicate button + openDuplicateDialog function
+Plan: 1 of 1 in current phase
+Status: Complete — Phase 5 executed and verified
+Last activity: 2026-05-02 — Phase 5 complete: duplicate button + openDuplicateDialog shipped
 
-Progress: [████████░░] 75%
+Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
 
 ## Performance Metrics
 

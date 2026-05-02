@@ -78,5 +78,7 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+- [ ] User can duplicate an existing spool — opens Add Spool dialog pre-filled from source spool — *Validated in Phase 5: Spool Duplication*
+
 ---
-*Last updated: 2026-05-01 after Phase 4 completion*
+*Last updated: 2026-05-02 after Phase 5 completion*
