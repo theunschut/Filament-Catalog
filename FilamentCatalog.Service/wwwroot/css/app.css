@@ -67,11 +67,8 @@ select, input, textarea { font-family: inherit; font-size: 14px; }
 
 /* ---- Spool list ---- */
 #spool-list { display: flex; flex-direction: column; }
-.spool-row {
-    display: flex; align-items: center; gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md);
-    border-bottom: 1px solid var(--color-border); background: var(--color-surface);
-}
+.spool-row { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
+.spool-row[hidden] { display: none; }
 .spool-color { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
 .spool-info { flex: 1; min-width: 0; }
 .spool-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
