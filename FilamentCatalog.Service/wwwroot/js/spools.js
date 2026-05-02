@@ -205,7 +205,14 @@ function buildSpoolRow(spool) {
     editBtn.textContent = 'Edit';
     editBtn.addEventListener('click', () => openEditDialog(spool));
 
-    row.append(swatch, info, ownerEl, weightEl, priceEl, spoolBadge, paymentBadge, notesIcon, editBtn);
+    // Duplicate button
+    const duplicateBtn = document.createElement('button');
+    duplicateBtn.type = 'button';
+    duplicateBtn.className = 'spool-edit-btn spool-duplicate-btn';
+    duplicateBtn.textContent = 'Duplicate';
+    duplicateBtn.addEventListener('click', () => openDuplicateDialog(spool));
+
+    row.append(swatch, info, ownerEl, weightEl, priceEl, spoolBadge, paymentBadge, notesIcon, editBtn, duplicateBtn);
     return row;
 }
 
@@ -298,6 +305,30 @@ function openEditDialog(spool) {
     resetFormForAdd();
     repopulateOwnerSelect(allOwners);
     populateFormForEdit(spool);
+    dialog.showModal();
+}
+
+function openDuplicateDialog(spool) {
+    resetFormForAdd();
+    repopulateOwnerSelect(allOwners);
+    // Pre-fill all fields from source spool (mirrors populateFormForEdit but stays in add mode)
+    nameInput.value     = spool.name;
+    matInput.value      = spool.material;
+    const hex = HEX_RE.test(spool.colorHex ?? '') ? spool.colorHex : '#888888';
+    colorPicker.value   = hex;
+    colorHexInput.value = hex;
+    colorSwatch.style.background = hex;
+    ownerSelect.value   = String(spool.ownerId);
+    weightInput.value   = spool.weightGrams ?? '';
+    priceInput.value    = spool.pricePaid  ?? '';
+    statusSelect.value  = spool.spoolStatus;
+    paymentSelect.value = spool.paymentStatus;
+    notesInput.value    = spool.notes ?? '';
+    // Duplicate mode: title changes, stays in add mode (no editId, no delete button)
+    dialogTitle.textContent  = 'Duplicate Spool';
+    dialog.dataset.editId    = '';
+    deleteBtn.style.display  = 'none';
+    deleteConfirm.style.display = 'none';
     dialog.showModal();
 }
 

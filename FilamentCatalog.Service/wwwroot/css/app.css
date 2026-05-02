@@ -81,6 +81,8 @@ select, input, textarea { font-family: inherit; font-size: 14px; }
 .spool-notes-icon { color: var(--color-muted); cursor: default; }
 .spool-edit-btn { margin-left: auto; background: none; border: 1px solid var(--color-border); border-radius: 4px; padding: 2px 8px; font-size: 13px; color: #374151; }
 .spool-edit-btn:hover { background: var(--color-bg); }
+.spool-duplicate-btn { margin-left: var(--space-sm); }
+.spool-duplicate-btn:hover { background: var(--color-bg); }
 
 /* Read-only status badges */
 .badge {
