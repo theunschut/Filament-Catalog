@@ -81,7 +81,29 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
   2. After sync, the spool-creation dropdown is populated with Bambu products including their extracted dominant color swatches
   3. Re-running sync upserts products without duplicates (matched on Name + Material) and updates LastSyncedAt
   4. After the first successful sync, disconnecting from the internet and reloading the app still shows full product data in the dropdown
-**Plans**: TBD
+**Plans**: 5 plans
+
+**Wave 1:**
+- [ ] 03-01-PLAN.md — BambuProduct entity + AppDbContext DbSet + EF migration AddBambuProduct + ImageSharp package
+
+**Wave 2** *(parallel — no shared files)*:
+- [ ] 03-02-PLAN.md — ISyncService + SyncService (Shopify fetch + ImageSharp color extraction + EF upsert) + SyncStateService + SyncBackgroundService + SyncStatusDto
+- [ ] 03-04-PLAN.md — api.js sync wrappers + catalog.js two-step picker module + index.html markup (sync button, two-step selects, catalog-empty-notice)
+
+**Wave 3** *(blocked on 03-02)*:
+- [ ] 03-03-PLAN.md — SyncController (POST /api/sync/start, GET /api/sync/status) + CatalogController (GET /api/catalog/count, /materials, /colors) + Program.cs DI wiring
+
+**Wave 4** *(blocked on 03-03 + 03-04)*:
+- [ ] 03-05-PLAN.md — spools.js two-step picker integration + app.js sync button/polling/catalog-gate wiring + app.css info-banner style (autonomous: false — human smoke test required)
+
+**Cross-cutting constraints:**
+- `DateTime.UtcNow` everywhere — no `DateTime.Now`
+- `using` disposal for all ImageSharp `Image.Load<Rgba32>()` calls
+- `BackgroundService` + `Channel<SyncJob>` (capacity 1, DropNewest) — no alternatives
+- 202 + polling `/api/sync/status` — not SSE
+- `textContent` only for all DOM rendering — no innerHTML with untrusted data
+- No FK from Spool to BambuProduct — denormalized copy at creation time
+
 **UI hint**: yes
 
 ### Phase 4: Refactor Project Structure
@@ -133,6 +155,6 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-05-01 |
 | 2. Spool & Owner CRUD | 4/4 | In progress | - |
-| 3. Bambu Catalog Sync | 0/? | Not started | - |
+| 3. Bambu Catalog Sync | 0/5 | Ready to execute | - |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
 | 5. Spool Duplication | 1/1 | Complete | 2026-05-02 |
