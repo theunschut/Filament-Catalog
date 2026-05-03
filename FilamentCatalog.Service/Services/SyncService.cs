@@ -20,7 +20,6 @@ public class SyncService(
     public async Task SyncCatalogAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Catalog sync started");
-        stateService.Start();
 
         try
         {
@@ -38,26 +37,38 @@ public class SyncService(
 
             var entries = payload.Data;
             logger.LogInformation("Loaded {Count} filament color entries", entries.Length);
+
+            // CR-01 fix: call Start once, with totalEstimate known upfront
             stateService.Start(totalEstimate: entries.Length);
+
+            var syncTime = DateTime.UtcNow;
 
             foreach (var entry in entries)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var colorName = entry.FilaColorName.TryGetValue("en", out var en) ? en : entry.FilaColorName.Values.FirstOrDefault() ?? "Unknown";
-                var colorHex = StripAlpha(entry.FilaColor.FirstOrDefault() ?? "#888888");
+                var colorName = entry.FilaColorName.TryGetValue("en", out var en)
+                    ? en
+                    : entry.FilaColorName.Values.FirstOrDefault() ?? "Unknown";
 
-                await UpsertAsync(
-                    name: colorName,
-                    material: entry.FilaType,
+                // CR-04 fix: validate hex before storing — reject malformed values
+                var rawHex = entry.FilaColor.FirstOrDefault() ?? "";
+                var colorHex = NormalizeHex(rawHex);
+
+                // CR-03 fix: Name stores the color name (unique key component with Material);
+                // product line is derived at query time via Material field.
+                UpsertTracked(
                     colorName: colorName,
+                    material: entry.FilaType,
                     colorHex: colorHex,
-                    cancellationToken);
+                    syncTime: syncTime);
 
                 stateService.IncrementProgress();
             }
 
-            var syncTime = DateTime.UtcNow;
+            // CR-02 fix: single SaveChangesAsync after the loop — not per-row
+            await db.SaveChangesAsync(cancellationToken);
+
             stateService.Complete(syncTime);
             logger.LogInformation("Catalog sync completed at {SyncTime}", syncTime);
         }
@@ -74,40 +85,57 @@ public class SyncService(
         }
     }
 
-    private static string StripAlpha(string hex)
+    /// <summary>
+    /// Accepts "#RRGGBBAA" (strips alpha) or "#RRGGBB". Rejects anything else and returns fallback.
+    /// </summary>
+    private static string NormalizeHex(string raw)
     {
-        // "#FF6A13FF" (8-char) → "#FF6A13"; already 7-char values pass through unchanged
-        return hex.Length == 9 ? hex[..7] : hex;
+        if (string.IsNullOrWhiteSpace(raw)) return "#888888";
+
+        // Strip alpha from 9-char "#RRGGBBAA" → "#RRGGBB"
+        var hex = raw.Length == 9 && raw[0] == '#' ? raw[..7] : raw;
+
+        // Validate: must be "#RRGGBB"
+        if (hex.Length == 7 && hex[0] == '#' &&
+            hex[1..].All(c => c is (>= '0' and <= '9') or (>= 'A' and <= 'F') or (>= 'a' and <= 'f')))
+        {
+            return hex.ToUpperInvariant();
+        }
+
+        return "#888888"; // fallback for unexpected formats
     }
 
-    private async Task UpsertAsync(
-        string name, string material, string colorName,
-        string colorHex, CancellationToken cancellationToken)
+    /// <summary>
+    /// Upsert via EF change tracking — no per-row SaveChanges.
+    /// Matches on (ColorName, Material) which is the natural unique key from the source data.
+    /// Name is set to ColorName (serves as the DB unique constraint column alongside Material).
+    /// </summary>
+    private void UpsertTracked(string colorName, string material, string colorHex, DateTime syncTime)
     {
-        var existing = await db.BambuProducts
-            .FirstOrDefaultAsync(p => p.Name == name && p.Material == material, cancellationToken);
+        var existing = db.BambuProducts.Local
+            .FirstOrDefault(p => p.Name == colorName && p.Material == material)
+            ?? db.BambuProducts
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Name == colorName && p.Material == material);
 
         if (existing != null)
         {
-            existing.ColorName = colorName;
+            db.BambuProducts.Attach(existing);
             existing.ColorHex = colorHex;
-            existing.ColorSwatchUrl = null;
-            existing.LastSyncedAt = DateTime.UtcNow;
+            existing.LastSyncedAt = syncTime;
         }
         else
         {
             db.BambuProducts.Add(new BambuProduct
             {
-                Name = name,
+                Name = colorName,
                 Material = material,
                 ColorName = colorName,
                 ColorHex = colorHex,
                 ColorSwatchUrl = null,
-                LastSyncedAt = DateTime.UtcNow
+                LastSyncedAt = syncTime
             });
         }
-
-        await db.SaveChangesAsync(cancellationToken);
     }
 }
 
