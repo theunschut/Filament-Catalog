@@ -9,9 +9,8 @@ public class SyncController(Channel<SyncJob> channel, SyncStateService stateServ
     public async Task<IActionResult> StartSync()
     {
         var job = new SyncJob(Id: Environment.TickCount);
-        // TryWrite instead of WriteAsync — channel has capacity 1 with DropNewest;
-        // if already full the old job is dropped and the new one is written.
-        // WriteAsync would wait (but with DropNewest the write completes immediately anyway).
+        // WriteAsync on a BoundedChannel with DropNewest completes immediately —
+        // if the channel is full the oldest item is dropped and the new one is written.
         await channel.Writer.WriteAsync(job);
         return Accepted(new { message = "Sync started" });
     }
