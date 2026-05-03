@@ -172,11 +172,6 @@ function buildSpoolRow(spool) {
     matEl.textContent = spool.material;    // textContent — XSS safe
     info.append(nameEl, matEl);
 
-    // Owner
-    const ownerEl = document.createElement('div');
-    ownerEl.className = 'spool-owner';
-    ownerEl.textContent = spool.owner?.name ?? '—';   // textContent — XSS safe
-
     // Weight
     const weightEl = document.createElement('div');
     weightEl.className = 'spool-weight';
@@ -213,7 +208,7 @@ function buildSpoolRow(spool) {
     duplicateBtn.textContent = 'Duplicate';
     duplicateBtn.addEventListener('click', () => openDuplicateDialog(spool));
 
-    row.append(swatch, info, ownerEl, weightEl, priceEl, spoolBadge, paymentBadge, notesIcon, editBtn, duplicateBtn);
+    row.append(swatch, info, weightEl, priceEl, spoolBadge, paymentBadge, notesIcon, editBtn, duplicateBtn);
     return row;
 }
 
