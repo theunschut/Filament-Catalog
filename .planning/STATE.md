@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 6 planned — 2 plans in 2 waves, ready to execute
+**Current focus:** Phase 6 executing — Wave 1 in progress (HTML+CSS restructure)
 
 ## Current Position
 
-Phase: 6 of 6 planned (UI Layout Redesign) — PLANNING COMPLETE
-Plan: 0 of 2 in current phase
-Status: Phase 6 ready to execute — 2 plans (Wave 1: HTML+CSS, Wave 2: JS tree view)
-Last activity: 2026-05-03 — Phase 6 planned: two-column layout, owner-grouped tree view, collapse/expand with localStorage
+Phase: 6 of 6 planned (UI Layout Redesign) — EXECUTING
+Plan: 1 of 2 in current phase
+Status: Phase 6 executing — Wave 1: HTML+CSS (complete), Wave 2: JS tree view (pending)
+Last activity: 2026-05-03 — Plan 06-01 complete (HTML+CSS layout restructure)
 
 Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
 
@@ -73,5 +73,5 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-01
-Stopped at: Phase 4 complete. Phase 2 (Spool & Owner CRUD) still needs verification + Phase 3 (Bambu Catalog Sync) not yet started. Human UAT pending for phase 4 (enum serialization + endpoint smoke test).
+Last session: 2026-05-03
+Stopped at: Phase 6 Plan 01 complete. Plan 06-02 (JS tree view rendering) is next.

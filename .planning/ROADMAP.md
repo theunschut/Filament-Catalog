@@ -163,7 +163,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Plans**: 2 plans
 
 **Wave 1:**
-- [ ] 06-01-PLAN.md — HTML restructure (index.html two-column layout + balance sidebar + expand-collapse btn) + CSS additions/replacements (app.css layout, sidebar, tree-view rules)
+- [x] 06-01-PLAN.md — HTML restructure (index.html two-column layout + balance sidebar + expand-collapse btn) + CSS additions/replacements (app.css layout, sidebar, tree-view rules) *(completed 2026-05-03)*
 
 **Wave 2** *(blocked on Wave 1 completion)*:
 - [ ] 06-02-PLAN.md — JS tree view rendering + owner group collapse/expand + localStorage persistence + filter group visibility + app.js wiring (spools.js + app.js)
@@ -184,4 +184,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 3. Bambu Catalog Sync | 5/5 | Complete | 2026-05-03 |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
 | 5. Spool Duplication | 1/1 | Complete | 2026-05-02 |
-| 6. UI Layout Redesign | 0/2 | Planned | - |
+| 6. UI Layout Redesign | 1/2 | In progress | - |
