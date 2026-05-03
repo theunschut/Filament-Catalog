@@ -16,7 +16,8 @@ const listEl       = document.getElementById('spool-list');
 const filterOwner  = document.getElementById('filter-owner');
 const filterMat    = document.getElementById('filter-material');
 const filterSearch = document.getElementById('filter-search');
-const addBtn       = document.getElementById('add-spool-btn');
+const addBtn              = document.getElementById('add-spool-btn');
+const expandCollapseBtn   = document.getElementById('expand-collapse-btn');
 
 // Spool dialog refs
 const dialog        = document.getElementById('spool-dialog');
@@ -75,18 +76,31 @@ function applyFilters() {
         return true;
     });
 
-    // Show/hide rows based on spool id
+    // Show/hide individual spool rows
     const rows = listEl.querySelectorAll('.spool-row[data-id]');
     rows.forEach(row => {
         const id = parseInt(row.dataset.id);
         row.hidden = !visible.some(s => s.id === id);
     });
 
+    // Show/hide owner groups (D-07, D-08): hide groups with 0 visible rows
+    const groups = listEl.querySelectorAll('.owner-group');
+    groups.forEach(group => {
+        const ownerId = parseInt(group.dataset.ownerId);
+        // D-07: if owner filter active, hide non-matching groups entirely
+        if (ownerFilter && ownerId !== parseInt(ownerFilter)) {
+            group.hidden = true;
+            return;
+        }
+        // D-08: hide groups where no spool rows are visible
+        const visibleRows = group.querySelectorAll('.spool-row:not([hidden])');
+        group.hidden = visibleRows.length === 0;
+    });
+
     // Show empty state if needed
     const emptyEl = listEl.querySelector('.empty-state');
     if (emptyEl) {
         emptyEl.hidden = visible.length > 0 || allSpools.length === 0;
-        // Replace text if filters are active vs. no spools at all
         const h2 = emptyEl.querySelector('h2');
         const p  = emptyEl.querySelector('p');
         if (allSpools.length === 0) {
@@ -97,6 +111,44 @@ function applyFilters() {
             p.textContent  = '';
         }
     }
+}
+
+// ---- Collapse state helpers (D-11) ----
+function isCollapsed(ownerId) {
+    return localStorage.getItem('fc:collapse:' + ownerId) === '1';
+}
+
+function setCollapsed(ownerId, collapsed) {
+    if (collapsed) {
+        localStorage.setItem('fc:collapse:' + ownerId, '1');
+    } else {
+        localStorage.removeItem('fc:collapse:' + ownerId);
+    }
+}
+
+function applyCollapseState(groupEl, collapsed) {
+    const header = groupEl.querySelector('.owner-group-header');
+    const rows   = groupEl.querySelector('.owner-group-rows');
+    const chevron = groupEl.querySelector('.owner-chevron');
+    if (collapsed) {
+        rows.hidden = true;
+        header.setAttribute('aria-expanded', 'false');
+        chevron.textContent = '▶';
+    } else {
+        rows.hidden = false;
+        header.setAttribute('aria-expanded', 'true');
+        chevron.textContent = '▼';
+    }
+}
+
+function updateExpandCollapseBtn() {
+    if (!expandCollapseBtn) return;
+    const groups = listEl.querySelectorAll('.owner-group');
+    const anyCollapsed = Array.from(groups).some(g => {
+        const ownerId = g.dataset.ownerId;
+        return isCollapsed(ownerId);
+    });
+    expandCollapseBtn.textContent = anyCollapsed ? 'Expand all' : 'Collapse all';
 }
 
 // ---- Material select population ----
@@ -212,6 +264,62 @@ function buildSpoolRow(spool) {
     return row;
 }
 
+function buildOwnerGroup(owner, spools) {
+    const group = document.createElement('div');
+    group.className = 'owner-group';
+    group.dataset.ownerId = owner.id;
+
+    // Header: chevron + name + badge
+    const header = document.createElement('div');
+    header.className = 'owner-group-header';
+    header.setAttribute('role', 'button');
+    header.setAttribute('aria-expanded', 'true');
+    header.setAttribute('tabindex', '0');
+
+    const chevron = document.createElement('span');
+    chevron.className = 'owner-chevron';
+    chevron.textContent = '▼';
+
+    const nameEl = document.createElement('span');
+    nameEl.className = 'owner-group-name';
+    nameEl.textContent = owner.name;   // textContent — XSS safe
+
+    const badge = document.createElement('span');
+    badge.className = 'badge owner-spool-count';
+    badge.textContent = spools.length + ' spools';
+
+    header.append(chevron, nameEl, badge);
+
+    // Rows container
+    const rowsContainer = document.createElement('div');
+    rowsContainer.className = 'owner-group-rows';
+    spools.forEach(s => rowsContainer.appendChild(buildSpoolRow(s)));
+
+    group.append(header, rowsContainer);
+
+    // Apply persisted collapse state (D-10, D-11, D-12)
+    applyCollapseState(group, isCollapsed(owner.id));
+
+    // Toggle on header click
+    header.addEventListener('click', () => {
+        const nowCollapsed = !isCollapsed(owner.id);
+        setCollapsed(owner.id, nowCollapsed);
+        applyCollapseState(group, nowCollapsed);
+        updateExpandCollapseBtn();
+        applyFilters(); // re-evaluate group visibility
+    });
+
+    // Keyboard: Enter and Space also toggle
+    header.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            header.click();
+        }
+    });
+
+    return group;
+}
+
 export function renderSpools(spools, owners) {
     allSpools = spools;
     allOwners = owners;
@@ -228,14 +336,21 @@ export function renderSpools(spools, owners) {
         empty.append(h2, p);
         fragment.appendChild(empty);
     } else {
+        // Build hidden empty state (shown by applyFilters when filters produce no results)
         const empty = document.createElement('div');
         empty.className = 'empty-state';
         empty.hidden = true;
         const h2 = document.createElement('h2');
-        const p = document.createElement('p');
+        const p  = document.createElement('p');
         empty.append(h2, p);
         fragment.appendChild(empty);
-        spools.forEach(s => fragment.appendChild(buildSpoolRow(s)));
+
+        // Group spools by owner; preserve owner order from owners array
+        owners.forEach(owner => {
+            const ownerSpools = spools.filter(s => s.ownerId === owner.id);
+            if (ownerSpools.length === 0) return; // skip owners with no spools
+            fragment.appendChild(buildOwnerGroup(owner, ownerSpools));
+        });
     }
 
     listEl.replaceChildren(fragment);
@@ -243,6 +358,7 @@ export function renderSpools(spools, owners) {
     repopulateOwnerFilter(owners);
     repopulateOwnerSelect(owners);
     applyFilters();
+    updateExpandCollapseBtn();
 }
 
 // ---- Dialog error helpers ----
@@ -429,4 +545,22 @@ export function initChipFilters() {
 // ---- Expose dialog close signal for app.js ----
 export function onSpoolDialogClose(callback) {
     dialog.addEventListener('close', callback);
+}
+
+// ---- Expand/Collapse All button wiring ----
+export function initExpandCollapseBtn() {
+    if (!expandCollapseBtn) return;
+    expandCollapseBtn.addEventListener('click', () => {
+        const groups = listEl.querySelectorAll('.owner-group');
+        const anyCollapsed = Array.from(groups).some(g => isCollapsed(g.dataset.ownerId));
+        // If any collapsed — expand all; otherwise collapse all
+        const targetCollapsed = !anyCollapsed;
+        groups.forEach(g => {
+            const ownerId = g.dataset.ownerId;
+            setCollapsed(ownerId, targetCollapsed);
+            applyCollapseState(g, targetCollapsed);
+        });
+        expandCollapseBtn.textContent = targetCollapsed ? 'Expand all' : 'Collapse all';
+        applyFilters();
+    });
 }
