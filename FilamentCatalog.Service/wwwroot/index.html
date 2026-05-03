@@ -37,47 +37,47 @@
     <button id="manage-owners-btn" aria-label="Manage owners" title="Manage owners">&#9881;</button>
   </header>
 
-  <!-- Filter bar -->
-  <div id="filter-bar">
-    <select id="filter-owner">
-      <option value="">All owners</option>
-    </select>
-    <select id="filter-material">
-      <option value="">All materials</option>
-    </select>
-    <div class="chip-group" id="chip-group-spool">
-      <button type="button" class="chip" data-status-filter="spool" data-value="Sealed">Sealed</button>
-      <button type="button" class="chip" data-status-filter="spool" data-value="Active">Active</button>
-      <button type="button" class="chip" data-status-filter="spool" data-value="Empty">Empty</button>
+  <div id="main-layout">
+    <aside id="balance-sidebar">
+      <h2>Balance Overview</h2>
+      <table id="balance-table">
+        <thead>
+          <tr>
+            <th>Owner</th>
+            <th>Spools</th>
+            <th>Value</th>
+            <th>Owed</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </aside>
+    <div id="spool-column">
+      <div id="filter-bar">
+        <select id="filter-owner">
+          <option value="">All owners</option>
+        </select>
+        <select id="filter-material">
+          <option value="">All materials</option>
+        </select>
+        <div class="chip-group" id="chip-group-spool">
+          <button type="button" class="chip" data-status-filter="spool" data-value="Sealed">Sealed</button>
+          <button type="button" class="chip" data-status-filter="spool" data-value="Active">Active</button>
+          <button type="button" class="chip" data-status-filter="spool" data-value="Empty">Empty</button>
+        </div>
+        <div class="chip-group" id="chip-group-payment">
+          <button type="button" class="chip" data-status-filter="payment" data-value="Paid">Paid</button>
+          <button type="button" class="chip" data-status-filter="payment" data-value="Unpaid">Unpaid</button>
+          <button type="button" class="chip" data-status-filter="payment" data-value="Partial">Partial</button>
+        </div>
+        <input type="search" id="filter-search" placeholder="Search name, material, notes&#8230;" />
+        <p id="catalog-empty-notice" class="info-banner" hidden>Sync the Bambu catalog first to enable adding spools.</p>
+        <button type="button" id="expand-collapse-btn" class="btn-secondary">Collapse all</button>
+        <button type="button" id="add-spool-btn">Add Spool</button>
+      </div>
+      <main id="spool-list"></main>
     </div>
-    <div class="chip-group" id="chip-group-payment">
-      <button type="button" class="chip" data-status-filter="payment" data-value="Paid">Paid</button>
-      <button type="button" class="chip" data-status-filter="payment" data-value="Unpaid">Unpaid</button>
-      <button type="button" class="chip" data-status-filter="payment" data-value="Partial">Partial</button>
-    </div>
-    <input type="search" id="filter-search" placeholder="Search name, material, notes&#8230;" />
-    <p id="catalog-empty-notice" class="info-banner" hidden>Sync the Bambu catalog first to enable adding spools.</p>
-    <button type="button" id="add-spool-btn">Add Spool</button>
   </div>
-
-  <!-- Spool list -->
-  <main id="spool-list"></main>
-
-  <!-- Balance section -->
-  <details open id="balance-section">
-    <summary>Balance Overview</summary>
-    <table id="balance-table">
-      <thead>
-        <tr>
-          <th>Owner</th>
-          <th>Spools</th>
-          <th>Value</th>
-          <th>Owed</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </details>
 
   <!-- Spool add/edit dialog -->
   <dialog id="spool-dialog">
