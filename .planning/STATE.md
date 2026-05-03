@@ -2,68 +2,16 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-30)
+See: .planning/PROJECT.md (updated 2026-05-03)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 6 complete — all verification passed
+**Current focus:** v1.0 milestone shipped — planning next milestone
 
 ## Current Position
 
-Phase: 6 of 6 planned (UI Layout Redesign) — COMPLETE
-Plan: 2 of 2 in current phase
-Status: All phases executed and verified — Phase 6 human UAT passed (4/4)
-Last activity: 2026-05-03 — Phase 6 complete; all human browser tests passed
-
-Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
-
-## Performance Metrics
-
-**Velocity:**
-- Total plans completed: 3
-- Average duration: -
-- Total execution time: 0 hours
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 1. Foundation | 3 | ~12 min | ~4 min |
-| 2. Spool & Owner CRUD | - | - | - |
-| 3. Bambu Catalog Sync | - | - | - |
-
-**Recent Trend:**
-- Last 5 plans: -
-- Trend: -
-
-*Updated after each plan completion*
-
-## Accumulated Context
-
-### Decisions
-
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- Stack decided: .NET 10, ASP.NET Core minimal API, EF Core + SQLite, plain HTML/CSS/JS, Windows service
-- Catalog source: Local Bambu Studio filaments_color_codes.json (two candidate paths: AppData first, ProgramFiles fallback) — no web requests
-- Color extraction: NormalizeHex() reads fila_color field directly from JSON; strips alpha from #RRGGBBAA, validates #RRGGBB
-- SQLite path: AppContext.BaseDirectory (not relative working directory)
-- Static files: UseDefaultFiles() + UseStaticFiles()
-- Background sync: BackgroundService + Channel<SyncJob> pattern
-
-### Roadmap Evolution
-
-- Phase 4 added: Refactor project structure (split EF layer, rename to FilamentCatalog.Service, extract endpoints from Program.cs)
-- Phase 5 added: Spool duplication — duplicate button on spool rows, prefilled Add Spool modal
-- Phase 6 added: UI Layout Redesign — balance sidebar left of spool list + owner-grouped collapsible tree view
-
-### Pending Todos
-
-None yet.
-
-### Blockers/Concerns
-
-None yet.
+Phase: v1.0 milestone complete (6/6 phases)
+Status: All phases executed and verified — milestone archived
+Last activity: 2026-05-03 — v1.0 milestone closed
 
 ## Deferred Items
 
@@ -74,4 +22,4 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-03
-Stopped at: Phase 6 Plan 02 complete. All plans in Phase 6 executed.
+Stopped at: v1.0 milestone archived. Next step: /gsd-new-milestone
