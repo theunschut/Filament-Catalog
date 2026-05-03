@@ -6,6 +6,7 @@ import { initializeCatalogSelects, resetCatalogSelects, restoreCatalogSelectsFro
 // Module-level state
 let allSpools = [];
 let allOwners = [];
+let pendingHighlightId = null; // spool id to glow after next renderSpools
 
 // ---- Filter state ----
 const spoolStatusFilter   = new Set();  // empty = show all
@@ -345,9 +346,11 @@ export function renderSpools(spools, owners) {
         empty.append(h2, p);
         fragment.appendChild(empty);
 
-        // Group spools by owner; preserve owner order from owners array
+        // Group spools by owner; preserve owner order from owners array; sort by name within each group
         owners.forEach(owner => {
-            const ownerSpools = spools.filter(s => s.ownerId === owner.id);
+            const ownerSpools = spools
+                .filter(s => s.ownerId === owner.id)
+                .sort((a, b) => a.name.localeCompare(b.name));
             if (ownerSpools.length === 0) return; // skip owners with no spools
             fragment.appendChild(buildOwnerGroup(owner, ownerSpools));
         });
@@ -359,6 +362,15 @@ export function renderSpools(spools, owners) {
     repopulateOwnerSelect(owners);
     applyFilters();
     updateExpandCollapseBtn();
+
+    if (pendingHighlightId !== null) {
+        const row = listEl.querySelector(`.spool-row[data-id="${pendingHighlightId}"]`);
+        if (row) {
+            row.classList.add('spool-row--highlight');
+            row.addEventListener('animationend', () => row.classList.remove('spool-row--highlight'), { once: true });
+        }
+        pendingHighlightId = null;
+    }
 }
 
 // ---- Dialog error helpers ----
@@ -470,13 +482,16 @@ saveBtn.addEventListener('click', async () => {
 
     try {
         if (editId) {
+            pendingHighlightId = parseInt(editId);
             await updateSpool(parseInt(editId), payload);
         } else {
-            await createSpool(payload);
+            const created = await createSpool(payload);
+            pendingHighlightId = created.id;
         }
         dialog.close();
         // Refresh is triggered by the 'close' event listener in app.js
     } catch (err) {
+        pendingHighlightId = null;
         showDialogError(err.message);
     }
 });
