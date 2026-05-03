@@ -11,7 +11,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [x] **Phase 3: Bambu Catalog Sync** - Local Bambu Studio filament catalog sync, two-step material/color picker, and sync-status UI *(completed 2026-05-03)*
 - [x] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI *(completed 2026-05-01)*
 - [x] **Phase 5: Spool Duplication** - Duplicate button on spool rows opens Add Spool modal pre-filled from the source spool, letting the user tweak fields before saving as a new spool *(completed 2026-05-02)*
-- [ ] **Phase 6: UI Layout Redesign** - Balance sidebar left of spool list + owner-grouped collapsible tree view to reduce visual clutter as spool count grows
+- [x] **Phase 6: UI Layout Redesign** - Balance sidebar left of spool list + owner-grouped collapsible tree view to reduce visual clutter as spool count grows *(completed 2026-05-03)*
 
 ## Phase Details
 

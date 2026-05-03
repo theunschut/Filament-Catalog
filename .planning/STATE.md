@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 6 complete — all plans executed
+**Current focus:** Phase 6 complete — human UAT pending (4 browser tests)
 
 ## Current Position
 
-Phase: 6 of 6 planned (UI Layout Redesign) — COMPLETE
+Phase: 6 of 6 planned (UI Layout Redesign) — COMPLETE (human UAT pending)
 Plan: 2 of 2 in current phase
-Status: Phase 6 complete — Wave 1: HTML+CSS (complete), Wave 2: JS tree view (complete)
-Last activity: 2026-05-03 — Plan 06-02 complete (JS owner-grouped tree view)
+Status: All phases executed — Phase 6 verified (static); 4 browser tests in 06-HUMAN-UAT.md
+Last activity: 2026-05-03 — Phase 6 execution complete; VERIFICATION.md + HUMAN-UAT.md created
 
 Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
 
