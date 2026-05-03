@@ -1,7 +1,7 @@
 // app.js — page-load init and cross-module coordination
 
 import { getSpools, getOwners, getSummary, getBalance, startSync, getSyncStatus, getCatalogCount } from './api.js';
-import { renderSpools, initSpoolDialog, initChipFilters, onSpoolDialogClose, repopulateOwnerFilter, repopulateOwnerSelect } from './spools.js';
+import { renderSpools, initSpoolDialog, initChipFilters, onSpoolDialogClose, repopulateOwnerFilter, repopulateOwnerSelect, initExpandCollapseBtn } from './spools.js';
 import { initOwnerModal } from './owners.js';
 import { renderSummary, renderBalance, refreshSummaryAndBalance } from './summary.js';
 
@@ -22,6 +22,7 @@ try {
     renderSpools(spools, owners);
     initSpoolDialog();
     initChipFilters();
+    initExpandCollapseBtn();
     initOwnerModal();
     // ---- Catalog gate (per CONTEXT.md D-05) ----
     await initCatalogGate();
