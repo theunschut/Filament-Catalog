@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 3 complete — all 5 plans executed, verified, UAT passed
+**Current focus:** Phase 6 planned — 2 plans in 2 waves, ready to execute
 
 ## Current Position
 
-Phase: 3 of 5 planned (Bambu Catalog Sync) — COMPLETE
-Plan: 5 of 5 in current phase
-Status: Phase 3 complete — verified (16/16 must-haves), UAT passed (11/11), all SYNC-xx requirements met
-Last activity: 2026-05-03 — Phase 3 complete: pivot to local Bambu Studio filaments_color_codes.json, requirements updated
+Phase: 6 of 6 planned (UI Layout Redesign) — PLANNING COMPLETE
+Plan: 0 of 2 in current phase
+Status: Phase 6 ready to execute — 2 plans (Wave 1: HTML+CSS, Wave 2: JS tree view)
+Last activity: 2026-05-03 — Phase 6 planned: two-column layout, owner-grouped tree view, collapse/expand with localStorage
 
 Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
 

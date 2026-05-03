@@ -165,8 +165,13 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 **Wave 1:**
 - [ ] 06-01-PLAN.md — HTML restructure (index.html two-column layout + balance sidebar + expand-collapse btn) + CSS additions/replacements (app.css layout, sidebar, tree-view rules)
 
-**Wave 2** *(blocked on 06-01)*:
+**Wave 2** *(blocked on Wave 1 completion)*:
 - [ ] 06-02-PLAN.md — JS tree view rendering + owner group collapse/expand + localStorage persistence + filter group visibility + app.js wiring (spools.js + app.js)
+
+**Cross-cutting constraints:**
+- `textContent` only for all owner name rendering — no innerHTML (XSS)
+- `fc:collapse:{ownerId}` localStorage key scheme — namespaced to avoid collisions
+- All existing JS-referenced IDs preserved: spool-list, filter-owner, filter-material, filter-search, add-spool-btn, balance-table
 
 **UI hint**: yes
 
