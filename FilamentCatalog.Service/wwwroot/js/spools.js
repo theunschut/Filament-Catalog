@@ -346,8 +346,15 @@ export function renderSpools(spools, owners) {
         empty.append(h2, p);
         fragment.appendChild(empty);
 
-        // Group spools by owner; preserve owner order from owners array; sort by name within each group
-        owners.forEach(owner => {
+        // Sort owners: isMe first, then alphabetically by name
+        const sortedOwners = [...owners].sort((a, b) => {
+            if (a.isMe) return -1;
+            if (b.isMe) return 1;
+            return a.name.localeCompare(b.name);
+        });
+
+        // Group spools by owner; sorted owner order; sort by name within each group
+        sortedOwners.forEach(owner => {
             const ownerSpools = spools
                 .filter(s => s.ownerId === owner.id)
                 .sort((a, b) => a.name.localeCompare(b.name));
@@ -364,12 +371,22 @@ export function renderSpools(spools, owners) {
     updateExpandCollapseBtn();
 
     if (pendingHighlightId !== null) {
-        const row = listEl.querySelector(`.spool-row[data-id="${pendingHighlightId}"]`);
-        if (row) {
+        const highlightId = pendingHighlightId;
+        pendingHighlightId = null;
+        // Defer one frame so the browser commits the new DOM before the animation starts
+        requestAnimationFrame(() => {
+            const row = listEl.querySelector(`.spool-row[data-id="${highlightId}"]`);
+            if (!row) return;
+            // Expand the owner group if it is collapsed so the glow is visible
+            const group = row.closest('.owner-group');
+            if (group && isCollapsed(group.dataset.ownerId)) {
+                setCollapsed(group.dataset.ownerId, false);
+                applyCollapseState(group, false);
+                updateExpandCollapseBtn();
+            }
             row.classList.add('spool-row--highlight');
             row.addEventListener('animationend', () => row.classList.remove('spool-row--highlight'), { once: true });
-        }
-        pendingHighlightId = null;
+        });
     }
 }
 
