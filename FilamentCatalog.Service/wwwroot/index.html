@@ -54,6 +54,7 @@
     </aside>
     <div id="spool-column">
       <div id="filter-bar">
+        <button type="button" id="expand-collapse-btn" class="btn-secondary">Collapse all</button>
         <select id="filter-owner">
           <option value="">All owners</option>
         </select>
@@ -72,7 +73,6 @@
         </div>
         <input type="search" id="filter-search" placeholder="Search name, material, notes&#8230;" />
         <p id="catalog-empty-notice" class="info-banner" hidden>Sync the Bambu catalog first to enable adding spools.</p>
-        <button type="button" id="expand-collapse-btn" class="btn-secondary">Collapse all</button>
         <button type="button" id="add-spool-btn">Add Spool</button>
       </div>
       <main id="spool-list"></main>
