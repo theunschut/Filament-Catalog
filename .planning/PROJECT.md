@@ -77,7 +77,8 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
-- [ ] User can duplicate an existing spool — opens Add Spool dialog pre-filled from source spool — *Validated in Phase 5: Spool Duplication*
+- [x] User can duplicate an existing spool — opens Add Spool dialog pre-filled from source spool — *Validated in Phase 5: Spool Duplication*
+- [x] Balance overview displayed in a fixed-width sidebar left of the spool list; spool list grouped by owner in a collapsible tree view — *Validated in Phase 6: UI Layout Redesign (static; browser UAT pending)*
 
 ---
-*Last updated: 2026-05-03 after Phase 3 completion*
+*Last updated: 2026-05-03 after Phase 6 completion*
