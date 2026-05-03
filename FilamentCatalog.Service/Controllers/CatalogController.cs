@@ -44,7 +44,7 @@ public class CatalogController(AppDbContext db) : ControllerBase
                 id = p.Id,
                 colorName = p.ColorName,
                 colorHex = p.ColorHex,
-                productTitle = p.Material
+                productTitle = "Bambu " + p.Material
             })
             .ToListAsync();
 
