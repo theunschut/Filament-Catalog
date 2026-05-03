@@ -11,6 +11,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 - [x] **Phase 3: Bambu Catalog Sync** - Local Bambu Studio filament catalog sync, two-step material/color picker, and sync-status UI *(completed 2026-05-03)*
 - [x] **Phase 4: Refactor Project Structure** - Split EF Core layer into FilamentCatalog.EntityFramework project, rename main project to FilamentCatalog.Service, and extract API endpoints from Program.cs into organized service/controller classes with proper DI *(completed 2026-05-01)*
 - [x] **Phase 5: Spool Duplication** - Duplicate button on spool rows opens Add Spool modal pre-filled from the source spool, letting the user tweak fields before saving as a new spool *(completed 2026-05-02)*
+- [ ] **Phase 6: UI Layout Redesign** - Balance sidebar left of spool list + owner-grouped collapsible tree view to reduce visual clutter as spool count grows
 
 ## Phase Details
 
@@ -128,6 +129,7 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 **Cross-cutting constraints:**
 - All endpoint handler bodies copied verbatim — no logic changes during refactor
+- All endpoint handler bodies copied verbatim — no logic changes during refactor
 - No namespace declarations (consistent with existing codebase style using implicit global namespace)
 - `UseDefaultFiles()` before `UseStaticFiles()` — middleware order preserved in rewritten Program.cs
 
@@ -149,6 +151,25 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 
 **UI hint**: yes
 
+### Phase 6: UI Layout Redesign
+**Goal**: Reduce visual clutter by moving the balance overview into a fixed-width sidebar left of the spool list, and restructure the spool list into an owner-grouped collapsible tree view so spools don't push balance content off-screen as the list grows.
+**Depends on**: Phase 2
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. Balance overview is displayed in a sidebar to the left of the spool list, with a navigation-sidebar-appropriate fixed width, and does not shift position as spools are added
+  2. The spool list is ordered by owner, grouped under collapsible owner nodes (tree view), with each owner row showing the owner name and spool count
+  3. Collapsing an owner node hides its child spool rows; expanding shows them
+  4. All existing spool actions (edit, duplicate, delete) remain accessible within the tree view
+**Plans**: 2 plans
+
+**Wave 1:**
+- [ ] 06-01-PLAN.md — HTML restructure (index.html two-column layout + balance sidebar + expand-collapse btn) + CSS additions/replacements (app.css layout, sidebar, tree-view rules)
+
+**Wave 2** *(blocked on 06-01)*:
+- [ ] 06-02-PLAN.md — JS tree view rendering + owner group collapse/expand + localStorage persistence + filter group visibility + app.js wiring (spools.js + app.js)
+
+**UI hint**: yes
+
 ## Progress Table
 
 | Phase | Plans Complete | Status | Completed |
@@ -158,3 +179,4 @@ Three phases deliver a working local filament inventory app. Phase 1 lays the ru
 | 3. Bambu Catalog Sync | 5/5 | Complete | 2026-05-03 |
 | 4. Refactor Project Structure | 3/3 | Complete | 2026-05-01 |
 | 5. Spool Duplication | 1/1 | Complete | 2026-05-02 |
+| 6. UI Layout Redesign | 0/2 | Planned | - |

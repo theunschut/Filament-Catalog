@@ -55,6 +55,7 @@ Recent decisions affecting current work:
 
 - Phase 4 added: Refactor project structure (split EF layer, rename to FilamentCatalog.Service, extract endpoints from Program.cs)
 - Phase 5 added: Spool duplication — duplicate button on spool rows, prefilled Add Spool modal
+- Phase 6 added: UI Layout Redesign — balance sidebar left of spool list + owner-grouped collapsible tree view
 
 ### Pending Todos
 
