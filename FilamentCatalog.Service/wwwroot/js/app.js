@@ -111,8 +111,10 @@ function setCatalogGate(count) {
 // Poll /api/sync/status until status is 'completed' or 'error'
 async function pollSyncStatus() {
     const POLL_INTERVAL_MS = 500; // per RESEARCH.md recommendation
+    const MAX_POLLS = 600;        // 5-minute hard cap (600 × 500 ms)
+    let polls = 0;
 
-    while (true) {
+    while (polls++ < MAX_POLLS) {
         try {
             const status = await getSyncStatus();
 
@@ -154,6 +156,12 @@ async function pollSyncStatus() {
 
         await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
     }
+
+    // Timed out — treat as error so the button re-enables
+    syncCatalogBtn.textContent = 'Sync Bambu catalog';
+    syncCatalogBtn.disabled = false;
+    statLastSynced.textContent = 'Sync timed out';
+    statLastSynced.style.color = 'var(--color-destructive)';
 }
 
 // Sync button click handler
