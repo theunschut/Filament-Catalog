@@ -1,12 +1,9 @@
 #Requires -RunAsAdministrator
-param(
-    [string]$PublishDir = "$PSScriptRoot\publish"
-)
 
-$exePath = Join-Path $PublishDir "FilamentCatalog.exe"
+$exePath = "$PSScriptRoot\FilamentCatalog.Service\bin\Debug\net10.0\FilamentCatalog.Service.exe"
 
 if (-not (Test-Path $exePath)) {
-    Write-Error "Executable not found at '$exePath'. Run 'dotnet publish' first."
+    Write-Error "Executable not found at '$exePath'. Run 'dotnet build' first."
     exit 1
 }
 
