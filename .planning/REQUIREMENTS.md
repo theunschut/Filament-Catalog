@@ -4,12 +4,12 @@
 
 ### Catalog Sync
 
-- [ ] **SYNC-01**: User can trigger a Bambu catalog sync via a "Sync Bambu catalog" button in the UI
-- [ ] **SYNC-02**: Sync fetches product and color variant data from the Bambu EU Shopify JSON API (`/products.json`) — no HTML scraping required
-- [ ] **SYNC-03**: For each color variant, sync downloads the swatch image and extracts the dominant color using ImageSharp (center-crop, filter transparent pixels)
-- [ ] **SYNC-04**: Sync upserts into the BambuProduct table, matching on Name + Material to avoid duplicates; updates `LastSyncedAt` on each record
-- [ ] **SYNC-05**: UI shows when the catalog was last synced; displays a progress indicator while sync is running (202 + polling `/api/sync/status`)
-- [ ] **SYNC-06**: After the first sync the app works fully offline — BambuProduct table is the source of truth
+- [x] **SYNC-01**: User can trigger a Bambu catalog sync via a "Sync Bambu catalog" button in the UI
+- [x] **SYNC-02**: Sync reads product and color variant data from the locally installed Bambu Studio filament profile (`filaments_color_codes.json`) — no web requests required
+- [x] **SYNC-03**: Color hex values are read directly from the `fila_color` field in `filaments_color_codes.json`; alpha channel is stripped from 8-digit hex values via `NormalizeHex()`
+- [x] **SYNC-04**: Sync upserts into the BambuProduct table, matching on Name + Material to avoid duplicates; updates `LastSyncedAt` on each record
+- [x] **SYNC-05**: UI shows when the catalog was last synced; displays a progress indicator while sync is running (202 + polling `/api/sync/status`)
+- [x] **SYNC-06**: After the first sync the app works fully offline — BambuProduct table is the source of truth
 
 ### Spool Management
 
@@ -56,7 +56,8 @@
 - Mobile / cross-platform — Windows service is sufficient
 - AMS slot tracking — out of scope for inventory management
 - QR / NFC labels — unnecessary complexity for v1
-- AngleSharp HTML scraping — replaced by Shopify JSON API
+- AngleSharp HTML scraping — replaced by local Bambu Studio file
+- Shopify JSON API / ImageSharp swatch extraction — replaced by local `filaments_color_codes.json`
 
 ---
 
@@ -64,24 +65,24 @@
 
 | REQ-ID  | Phase                    | Status  |
 |---------|--------------------------|---------|
-| INFRA-01 | Phase 1 — Foundation    | Pending |
-| INFRA-02 | Phase 1 — Foundation    | Pending |
-| INFRA-03 | Phase 1 — Foundation    | Pending |
-| OWNER-03 | Phase 1 — Foundation    | Pending |
-| SPOOL-01 | Phase 2 — Spool & Owner CRUD | Pending |
-| SPOOL-02 | Phase 2 — Spool & Owner CRUD | Pending |
-| SPOOL-03 | Phase 2 — Spool & Owner CRUD | Pending |
-| SPOOL-04 | Phase 2 — Spool & Owner CRUD | Pending |
-| SPOOL-05 | Phase 2 — Spool & Owner CRUD | Pending |
-| SPOOL-06 | Phase 2 — Spool & Owner CRUD | Pending |
-| OWNER-01 | Phase 2 — Spool & Owner CRUD | Pending |
-| OWNER-02 | Phase 2 — Spool & Owner CRUD | Pending |
-| BAL-01  | Phase 2 — Spool & Owner CRUD | Pending |
-| BAL-02  | Phase 2 — Spool & Owner CRUD | Pending |
-| BAL-03  | Phase 2 — Spool & Owner CRUD | Pending |
-| SYNC-01 | Phase 3 — Bambu Catalog Sync | Pending |
-| SYNC-02 | Phase 3 — Bambu Catalog Sync | Pending |
-| SYNC-03 | Phase 3 — Bambu Catalog Sync | Pending |
-| SYNC-04 | Phase 3 — Bambu Catalog Sync | Pending |
-| SYNC-05 | Phase 3 — Bambu Catalog Sync | Pending |
-| SYNC-06 | Phase 3 — Bambu Catalog Sync | Pending |
+| INFRA-01 | Phase 1 — Foundation    | Complete |
+| INFRA-02 | Phase 1 — Foundation    | Complete |
+| INFRA-03 | Phase 1 — Foundation    | Complete |
+| OWNER-03 | Phase 1 — Foundation    | Complete |
+| SPOOL-01 | Phase 2 — Spool & Owner CRUD | Complete |
+| SPOOL-02 | Phase 2 — Spool & Owner CRUD | Complete |
+| SPOOL-03 | Phase 2 — Spool & Owner CRUD | Complete |
+| SPOOL-04 | Phase 2 — Spool & Owner CRUD | Complete |
+| SPOOL-05 | Phase 2 — Spool & Owner CRUD | Complete |
+| SPOOL-06 | Phase 2 — Spool & Owner CRUD | Complete |
+| OWNER-01 | Phase 2 — Spool & Owner CRUD | Complete |
+| OWNER-02 | Phase 2 — Spool & Owner CRUD | Complete |
+| BAL-01  | Phase 2 — Spool & Owner CRUD | Complete |
+| BAL-02  | Phase 2 — Spool & Owner CRUD | Complete |
+| BAL-03  | Phase 2 — Spool & Owner CRUD | Complete |
+| SYNC-01 | Phase 3 — Bambu Catalog Sync | Complete |
+| SYNC-02 | Phase 3 — Bambu Catalog Sync | Complete |
+| SYNC-03 | Phase 3 — Bambu Catalog Sync | Complete |
+| SYNC-04 | Phase 3 — Bambu Catalog Sync | Complete |
+| SYNC-05 | Phase 3 — Bambu Catalog Sync | Complete |
+| SYNC-06 | Phase 3 — Bambu Catalog Sync | Complete |

@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-30)
 
 **Core value:** Log a new spool quickly by picking from the Bambu catalog — no manual typing of names, materials, or colors.
-**Current focus:** Phase 3 planned (5 plans, 4 waves) — ready to execute
+**Current focus:** Phase 3 complete — all 5 plans executed, verified, UAT passed
 
 ## Current Position
 
-Phase: 3 of 5 planned (Bambu Catalog Sync)
-Plan: 0 of 5 in current phase
-Status: Ready to execute — Phase 3 planned (5 plans across 4 waves)
-Last activity: 2026-05-03 — Phase 3 planning complete: BambuProduct entity, sync service, controllers, catalog JS, spool integration
+Phase: 3 of 5 planned (Bambu Catalog Sync) — COMPLETE
+Plan: 5 of 5 in current phase
+Status: Phase 3 complete — verified (16/16 must-haves), UAT passed (11/11), all SYNC-xx requirements met
+Last activity: 2026-05-03 — Phase 3 complete: pivot to local Bambu Studio filaments_color_codes.json, requirements updated
 
 Progress: [██████████] 100% (phases 2 & 3 still unexecuted)
 
@@ -45,8 +45,8 @@ Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
 - Stack decided: .NET 10, ASP.NET Core minimal API, EF Core + SQLite, plain HTML/CSS/JS, Windows service
-- Scraper approach: Shopify JSON API (/products.json) — no HTML scraping
-- Color extraction: ImageSharp center-crop + transparent-pixel filter
+- Catalog source: Local Bambu Studio filaments_color_codes.json (two candidate paths: AppData first, ProgramFiles fallback) — no web requests
+- Color extraction: NormalizeHex() reads fila_color field directly from JSON; strips alpha from #RRGGBBAA, validates #RRGGBB
 - SQLite path: AppContext.BaseDirectory (not relative working directory)
 - Static files: UseDefaultFiles() + UseStaticFiles()
 - Background sync: BackgroundService + Channel<SyncJob> pattern

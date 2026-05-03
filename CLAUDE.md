@@ -2,14 +2,14 @@
 
 ## What This Is
 
-A local-only ASP.NET Core 10 web app for tracking Bambu Lab filament spools. Runs as a Windows service at `http://localhost:5000`. Tracks your own spools and friends' spools with payment status and balance tracking. Filament catalog populated by scraping the Bambu Lab EU Shopify store.
+A local-only ASP.NET Core 10 web app for tracking Bambu Lab filament spools. Runs as a Windows service at `http://localhost:5000`. Tracks your own spools and friends' spools with payment status and balance tracking. Filament catalog populated from the local Bambu Studio installation.
 
 ## Stack
 
 - **Backend**: .NET 10, ASP.NET Core minimal API, Windows service (`AddWindowsService()`)
 - **Database**: EF Core 10 + SQLite — `filament.db` stored at `AppContext.BaseDirectory`
-- **Scraper**: Shopify JSON API (`/products.json`) — no HTML scraping; `HttpClient` + JSON deserialization
-- **Color extraction**: SixLabors.ImageSharp 3.x — download swatch image, extract dominant color (filter alpha < 128)
+- **Catalog source**: Local `filaments_color_codes.json` from Bambu Studio installation — two candidate paths tried (AppData first, Program Files fallback); no web requests
+- **Color extraction**: Color hex read directly from `fila_color` field in JSON; `NormalizeHex()` strips alpha from 9-char `#RRGGBBAA` and validates `#RRGGBB` format
 - **Frontend**: Plain HTML/CSS/JS, ES modules, native `<dialog>` for modals — no build step, no framework
 
 ## Critical Conventions
@@ -20,7 +20,7 @@ A local-only ASP.NET Core 10 web app for tracking Bambu Lab filament spools. Run
 - **Sync progress**: 202 + polling `/api/sync/status` — not SSE.
 - **Migrations**: `MigrateAsync()` on startup. Add a startup guard to clear stale `__EFMigrationsLock` rows.
 - **DateTime**: Always `DateTime.UtcNow` — avoids EF Core 10 SQLite timezone breaking changes.
-- **ImageSharp**: Always dispose with `using`. Filter `pixel.A < 128` before computing dominant color.
+- **Catalog sync**: `SyncService` reads `filaments_color_codes.json` via `IServiceScopeFactory` (scoped from singleton `SyncBackgroundService`). `UpsertTracked()` uses EF change tracking; single `SaveChangesAsync` after the loop.
 
 ## GSD Workflow
 

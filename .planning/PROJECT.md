@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A local-only inventory app for tracking Bambu Lab filament spools. Runs as a Windows service (ASP.NET Core) and is accessed via browser at `localhost:5000`. Tracks your own spools and spools owned by friends, with payment status and a balance view showing what friends owe you. Filament data comes from a scraped Bambu Lab EU store catalog.
+A local-only inventory app for tracking Bambu Lab filament spools. Runs as a Windows service (ASP.NET Core) and is accessed via browser at `localhost:5000`. Tracks your own spools and spools owned by friends, with payment status and a balance view showing what friends owe you. Filament data comes from the locally installed Bambu Studio filament profiles.
 
 ## Core Value
 
@@ -18,8 +18,8 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 
 ### Active
 
-- [ ] User can sync the Bambu Lab EU filament catalog (scrape products + extract dominant color from swatch images)
-- [ ] User can add a spool by selecting a product from the synced catalog (color preview shown)
+- [x] User can sync the Bambu Lab filament catalog from local Bambu Studio installation (reads filaments_color_codes.json, extracts color hex via NormalizeHex) — *Validated in Phase 3: Bambu Catalog Sync*
+- [x] User can add a spool by selecting a product via two-step material/color picker (color swatch preview shown) — *Validated in Phase 3: Bambu Catalog Sync*
 - [ ] User can assign a spool to an owner (self or a named friend)
 - [ ] User can set and update payment status per spool (paid / unpaid / partial)
 - [ ] User can set and update spool status (sealed / active / empty)
@@ -42,8 +42,8 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 - Owner: Theun Schut — uses a Bambu Lab P1S printer
 - Friends buy rolls via Theun; some pay upfront, some pay later — payment status tracked per spool
 - Primary workflow: open app → log new spool → pick from catalog dropdown
-- After first catalog sync, app works fully offline
-- Stack: .NET 10, ASP.NET Core minimal API, EF Core + SQLite, AngleSharp (scraping), ImageSharp (color extraction), plain HTML/CSS/JS (no JS framework)
+- After first catalog sync, app works fully offline (BambuProduct table is source of truth)
+- Stack: .NET 10, ASP.NET Core with [ApiController] controllers, EF Core + SQLite, plain HTML/CSS/JS (no JS framework)
 
 ## Constraints
 
@@ -58,8 +58,7 @@ Log a new spool quickly by picking from the Bambu catalog — no manual typing o
 |----------|-----------|---------|
 | Web app over desktop (WPF/WinForms) | Browser UI is easier to build for data grids, modals, color swatches; hosting as Windows service makes it always-on | — Pending |
 | Plain HTML/CSS/JS frontend | No build step, no framework overhead for a local-only tool | — Pending |
-| AngleSharp for scraping | .NET-native HTML parser, no external process needed | — Pending |
-| ImageSharp for color extraction | Pure .NET, handles swatch image download + dominant color extraction in-process | — Pending |
+| Local file over Shopify API | Cloudflare blocks .NET HttpClient requests to the Bambu webshop; local Bambu Studio install already has the filament data | Implemented in Phase 3 |
 
 ## Evolution
 
@@ -81,4 +80,4 @@ This document evolves at phase transitions and milestone boundaries.
 - [ ] User can duplicate an existing spool — opens Add Spool dialog pre-filled from source spool — *Validated in Phase 5: Spool Duplication*
 
 ---
-*Last updated: 2026-05-02 after Phase 5 completion*
+*Last updated: 2026-05-03 after Phase 3 completion*
