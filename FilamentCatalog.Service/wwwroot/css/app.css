@@ -122,6 +122,12 @@ select, input, textarea { font-family: inherit; font-size: 14px; }
     border: 1px solid var(--color-border);
     border-radius: 8px;
     margin: var(--space-md);
+    overflow: hidden;
+}
+#balance-sidebar #balance-table th,
+#balance-sidebar #balance-table td {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 12px;
 }
 #balance-sidebar h2 {
     font-size: 14px;
