@@ -97,14 +97,74 @@ select, input, textarea { font-family: inherit; font-size: 14px; }
 .empty-state h2 { font-size: 18px; font-weight: 600; margin: 0 0 var(--space-sm); color: #374151; }
 
 /* ---- Balance section ---- */
-#balance-section { margin: var(--space-md); border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-surface); }
-#balance-section summary { padding: var(--space-sm) var(--space-md); font-weight: 600; cursor: pointer; list-style: none; }
-#balance-section summary::-webkit-details-marker { display: none; }
 #balance-table { width: 100%; border-collapse: collapse; }
 #balance-table th { padding: var(--space-sm) var(--space-md); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); text-align: left; border-bottom: 1px solid var(--color-border); }
 #balance-table td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--color-border); }
 #balance-table tr:last-child td { border-bottom: none; }
 .warning-icon { color: var(--color-warning); }
+
+/* ---- Phase 6: Layout redesign ---- */
+
+/* Two-column wrapper */
+#main-layout {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Balance sidebar */
+#balance-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 48px;
+    align-self: flex-start;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    margin: var(--space-md);
+}
+#balance-sidebar h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Spool column (right side) */
+#spool-column {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+}
+
+/* Owner group tree view */
+.owner-group-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+}
+.owner-chevron {
+    color: var(--color-muted);
+    font-size: 12px;
+}
+.owner-group-name {
+    font-size: 14px;
+    font-weight: 600;
+    flex: 1;
+}
+.owner-spool-count {
+    background: var(--color-bg);
+    color: var(--color-muted);
+    border: 1px solid var(--color-border);
+}
+.owner-group-rows .spool-row {
+    padding-left: 32px;
+}
 
 /* ---- Modals (shared) ---- */
 dialog {
